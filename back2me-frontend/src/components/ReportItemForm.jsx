@@ -89,19 +89,29 @@ const ReportItemForm = () => {
           />
         </div>
 
-        <div className="flex justify-end gap-4 pt-4">
-          <button
-            type="reset"
-            className="px-4 py-2 bg-gray-300 text-gray-800 font-semibold rounded-lg hover:bg-gray-400 transition"
-          >
-            Reset
-          </button>
-          <button
-            type="submit"
-            className="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition"
-          >
-            Submit
-          </button>
+        <div className="flex justify-between items-center pt-4">
+            <button
+                type="reset"
+                className="px-4 py-2 bg-red-300 text-gray-800 font-semibold rounded-lg hover:bg-red-400 transition cursor-pointer"
+                onClick={() => navigate('/report')}
+            >
+                Close
+            </button>
+
+            <div className="flex gap-4">
+                <button
+                type="reset"
+                className="px-4 py-2 bg-gray-300 text-gray-800 font-semibold rounded-lg hover:bg-gray-400 transition cursor-pointer "
+                >
+                Reset
+                </button>
+                <button
+                type="submit"
+                className="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition cursor-pointer"
+                >
+                Submit
+                </button>
+            </div>
         </div>
       </form>
     </div>
