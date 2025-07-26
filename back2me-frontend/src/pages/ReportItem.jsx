@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import Navbar from '../components/navbar';
 import { useNavigate } from 'react-router-dom';
 import LearnMoreModal from '../components/LearnMoreModal';
+import ReportItemModel from '../components/ReportItemModel';
 
 const ReportItem = () => {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
+  const [showLearnMore, setShowLearnMore] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
 
   return (
     <div className="flex flex-col h-screen overflow-hidden">
@@ -29,13 +31,13 @@ const ReportItem = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               className="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition duration-300 cursor-pointer"
-              onClick={() => navigate('/reportItemForm')}
+              onClick={() => setShowReportModal(true)}
             >
               Report Found Item
             </button>
             <button
               className="px-6 py-3 bg-gray-300 text-gray-800 font-semibold rounded-lg hover:bg-gray-400 transition duration-300 cursor-pointer"
-              onClick={() => setOpen(true)}
+              onClick={() => setShowLearnMore(true)}
             >
               How it works
             </button>
@@ -44,7 +46,8 @@ const ReportItem = () => {
       </div>
 
       {/* Modal */}
-      <LearnMoreModal open={open} onClose={() => setOpen(false)} />
+      <LearnMoreModal open={showLearnMore} onClose={() => setShowLearnMore(false)} />
+      <ReportItemModel open={showReportModal} onClose={() => setShowReportModal(false)} />
     </div>
   );
 };
