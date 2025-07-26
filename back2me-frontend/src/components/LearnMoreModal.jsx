@@ -1,10 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import searchImage from '../assets/images/Search item.jpg';
 import uploadImage from '../assets/images/Upload item.png';
 import giveImage from '../assets/images/Safe return.jpg';
 
 const LearnMoreModal = ({ open, onClose }) => {
-  if (!open) return null; // 
+  if (!open) return null;
+  const navigate = useNavigate();
 
   return (
     <div
@@ -52,9 +54,10 @@ const LearnMoreModal = ({ open, onClose }) => {
             Cancel
           </button>
           <button
-            className="bg-[#34dd8b] cursor-pointer hover:bg-[#25be79] text-white font-semibold py-1.5 w-24 rounded-lg shadow-md transition text-sm"
+            className="bg-[#34dd8b] cursor-pointer hover:bg-[#25be79] text-white font-semibold py-1.5 w-28 rounded-lg shadow-md transition text-sm"
+            onClick={() => navigate('/reportItemForm')}
           >
-            Save
+            Report Item
           </button>
         </div>
       </div>
