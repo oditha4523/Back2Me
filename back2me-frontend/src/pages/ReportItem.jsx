@@ -1,11 +1,14 @@
 import React from 'react';
+import { useState } from 'react';
 import Navbar from '../components/navbar';
 import ReportItemImage from '../assets/images/report-item-image.png';
 import { useNavigate } from 'react-router-dom';
+import LearnMoreModal from '../components/LearnMoreModal';
 
 const ReportItem = () => {
 
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
 
   return (
       <div className="flex flex-col h-screen overflow-hidden">
@@ -42,10 +45,15 @@ const ReportItem = () => {
                     onClick={() => navigate('/reportItemForm')}>
                     Report Found Item
                   </button>
-                  <button className="px-6 py-3 bg-gray-300 text-gray-800 font-semibold rounded-lg hover:bg-gray-400 transition duration-300 cursor-pointer">
+                  <button 
+                    className="px-6 py-3 bg-gray-300 text-gray-800 font-semibold rounded-lg hover:bg-gray-400 transition duration-300 cursor-pointer"
+                    onClick={() => setOpen(true)}>
                     Learn More
                   </button> 
                 </div>
+                {/* Set modal */}
+                <LearnMoreModal open={open} onClose={() => setOpen(false)}/>
+                
               </div>
             </div>
           </div>
