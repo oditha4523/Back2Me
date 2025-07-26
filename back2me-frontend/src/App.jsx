@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import FindItem from './pages/FindItem';
 import ReportItem from './pages/ReportItem';
+import ReportItemForm from './components/ReportItemForm';
+import LearnMoreModal from './components/LearnMoreModal';
 
 const App = () => {
   return (
@@ -12,6 +14,9 @@ const App = () => {
         <Route path="/find" element={<FindItem />} />
         <Route path="/report" element={<ReportItem />} />
         <Route path="/services" element={<div>Services Page - Coming Soon</div>} />
+        <Route path="/reportItemForm" element={<ReportItemForm/>} />
+        <Route path="/reportItemLearnMore" element={<LearnMoreModal/>} />
+
       </Routes>
     </BrowserRouter>
   )
