@@ -42,8 +42,8 @@ const Navbar = () => {
                   to={link.path}
                   className={`px-3 py-2 text-sm font-medium transition-colors duration-200 ${
                     location.pathname === link.path
-                      ? 'text-blue-600 border-b-2 border-blue-600'
-                      : 'text-gray-700 hover:text-blue-600 hover:border-b-2 hover:border-blue-300'
+                      ? 'text-green-600 border-b-2 border-green-600'
+                      : 'text-gray-700 hover:text-green-600 hover:border-b-2 hover:border-green-600'
                   }`}
                 >
                   {link.name}
@@ -56,7 +56,7 @@ const Navbar = () => {
           <div className="hidden md:block">
             {isLoggedIn ? (
               <div className="flex items-center space-x-4">
-                <button className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition-colors duration-200">
+                <button className="flex items-center space-x-2 text-gray-700 hover:text-green-600 transition-colors duration-200">
                   <div className="h-6 w-6 bg-gray-300 rounded-full flex items-center justify-center">
                     <span className="text-xs">👤</span>
                   </div>
@@ -73,13 +73,13 @@ const Navbar = () => {
               <div className="flex items-center space-x-3">
                 <button
                   onClick={() => setIsLoggedIn(true)}
-                  className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors duration-200"
+                  className="text-gray-700 hover:text-green-600 px-3 py-2 text-sm font-medium transition-colors duration-200"
                 >
                   Login
                 </button>
                 <button
                   onClick={() => setIsLoggedIn(true)}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-3xl text-sm font-medium transition-colors duration-200"
+                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-3xl text-sm font-medium transition-colors duration-200"
                 >
                   Sign Up
                 </button>
@@ -91,7 +91,7 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
-              className="text-gray-700 hover:text-blue-600 focus:outline-none focus:text-blue-600"
+              className="text-gray-700 hover:text-green-600 focus:outline-none focus:text-green-600"
             >
               {isMenuOpen ? (
                 <span className="text-2xl">✕</span>
@@ -113,8 +113,8 @@ const Navbar = () => {
                   onClick={() => setIsMenuOpen(false)}
                   className={`block px-3 py-2 text-base font-medium transition-colors duration-200 ${
                     location.pathname === link.path
-                      ? 'text-blue-600 bg-blue-50'
-                      : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                      ? 'text-green-600 bg-green-50'
+                      : 'text-gray-700 hover:text-green-600 hover:bg-gray-50'
                   }`}
                 >
                   {link.name}
@@ -125,7 +125,7 @@ const Navbar = () => {
               <div className="pt-4 border-t border-gray-200">
                 {isLoggedIn ? (
                   <div className="space-y-2">
-                    <button className="flex items-center space-x-2 w-full px-3 py-2 text-left text-gray-700 hover:text-blue-600 hover:bg-gray-50">
+                    <button className="flex items-center space-x-2 w-full px-3 py-2 text-left text-gray-700 hover:text-green-600 hover:bg-gray-50">
                       <div className="h-5 w-5 bg-gray-300 rounded-full flex items-center justify-center">
                         <span className="text-xs">👤</span>
                       </div>
@@ -148,7 +148,7 @@ const Navbar = () => {
                         setIsLoggedIn(true);
                         setIsMenuOpen(false);
                       }}
-                      className="w-full text-left px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+                      className="w-full text-left px-3 py-2 text-gray-700 hover:text-green-600 hover:bg-gray-50"
                     >
                       Login
                     </button>
@@ -157,7 +157,7 @@ const Navbar = () => {
                         setIsLoggedIn(true);
                         setIsMenuOpen(false);
                       }}
-                      className="w-full text-left px-3 py-2 bg-blue-600 text-white hover:bg-blue-700"
+                      className="w-full text-left px-3 py-2 bg-green-600 text-white hover:bg-green-700"
                     >
                       Sign Up
                     </button>
