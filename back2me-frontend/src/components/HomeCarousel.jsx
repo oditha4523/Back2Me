@@ -42,8 +42,8 @@ function ImageCarousel() {
   }, [activeItem]);
   return (<div className="w-full font-sans">
       <div className="w-full max-w-7xl p-2 sm:p-4 md:p-6 lg:p-8">
-        <ul ref={wrapperRef} className="flex w-full flex-col gap-2 h-[200px] sm:h-[280px] md:h-[360px] lg:h-[460px] md:flex-row md:gap-[4.5%]">
-          {persons.map((person, index) => <li onClick={() => setActiveItem(index)} aria-current={activeItem === index} className={classNames("relative group cursor-pointer transition-all duration-500 ease-in-out", "w-full h-[60px] sm:h-[80px] md:w-[16%] md:h-full", "[&[aria-current='true']]:h-[160px] sm:[&[aria-current='true']]:h-[200px] md:[&[aria-current='true']]:w-[48%] md:[&[aria-current='true']]:h-full", "flex-shrink-0", "md:[transition:width_var(--transition,300ms_ease_in)]")} key={person.name}>
+        <ul ref={wrapperRef} className="flex w-full flex-col gap-2 h-[200px] sm:h-[280px] md:h-[360px] lg:h-[540px] md:flex-row md:gap-[6%]">
+          {persons.map((person, index) => <li onClick={() => setActiveItem(index)} aria-current={activeItem === index} className={classNames("relative group cursor-pointer transition-all duration-500 ease-in-out", "w-full h-[60px] sm:h-[80px] md:w-[16%] md:h-full", "[&[aria-current='true']]:h-[160px] sm:[&[aria-current='true']]:h-[200px] md:[&[aria-current='true']]:w-[55%] md:[&[aria-current='true']]:h-full", "flex-shrink-0", "md:[transition:width_var(--transition,300ms_ease_in)]")} key={person.name}>
               {}
               <div className="relative h-full w-full overflow-hidden rounded-lg sm:rounded-xl md:rounded-2xl shadow-lg sm:shadow-xl md:shadow-2xl transition-transform duration-500 ease-in-out group-hover:scale-105 group-hover:z-10 transform-gpu">
                 <img className={classNames("absolute left-1/2 top-1/2 w-full h-full -translate-x-1/2 -translate-y-1/2 object-cover transition-all duration-500 ease-in-out", activeItem === index ? 'scale-105' : 'scale-100')} src={person.img} alt={person.name} />

@@ -55,11 +55,11 @@ const Home = () => {
           >
             {/* Left side - Text content */}
             <motion.div 
-              className="flex-1 lg:pr-8 lg:pl-18 max-w-2xl"
+              className="flex-1 lg:pr-8 lg:pl-4 max-w-2xl"
               variants={itemVariants}
             >
               <motion.h1 
-                className="text-2xl sm:text-3xl lg:text-8xl text-gray-800 mb-6 lg:mb-8 text-center lg:text-left lg:ml-8"
+                className="text-2xl sm:text-3xl lg:text-8xl text-gray-800 mb-6 lg:mb-8 text-center lg:text-left lg:ml-0"
                 variants={textVariants}
               >
                 Together,<br />We bring it <br />Back.
