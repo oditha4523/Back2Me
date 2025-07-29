@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState} from 'react';
+import { Link, useLocation , useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 
 const Navbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // You can manage this with your auth state
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -28,7 +29,7 @@ const Navbar = () => {
               <img 
                 src={logo} 
                 alt="Back2Me Logo" 
-                className="h-12 w-16.5 object-cover"
+                className="h-12 w-[60px] object-cover"
               />
             </Link>
           </div>
@@ -72,13 +73,19 @@ const Navbar = () => {
             ) : (
               <div className="flex items-center space-x-3">
                 <button
-                  onClick={() => setIsLoggedIn(true)}
+                  onClick={() => {
+                    setIsLoggedIn(true);
+                    navigate('/login?mode=login');
+                  }}
                   className="text-gray-700 hover:text-green-600 px-3 py-2 text-sm font-medium transition-colors duration-200"
                 >
                   Login
                 </button>
                 <button
-                  onClick={() => setIsLoggedIn(true)}
+                  onClick={() => {
+                    setIsLoggedIn(true);
+                    navigate('/login?mode=register');
+                  }}
                   className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-3xl text-sm font-medium transition-colors duration-200"
                 >
                   Sign Up

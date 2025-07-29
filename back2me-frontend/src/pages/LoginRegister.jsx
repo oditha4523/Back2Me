@@ -1,10 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaUser, FaLock } from "react-icons/fa";
 import { MdAlternateEmail } from "react-icons/md";
-import Navbar from "../components/navbar";
+import { useLocation } from "react-router-dom";
 
 const LoginRegister = () => {
   const [isRegistering, setIsRegistering] = useState(false);
+
+  const location = useLocation();
+
+  useEffect(() => {
+  const params = new URLSearchParams(location.search);
+  const mode = params.get("mode");
+  if (mode === "register") {
+    setIsRegistering(true);
+  } else {
+    setIsRegistering(false);
+  }
+}, [location.search]);
 
   return (
     <>
