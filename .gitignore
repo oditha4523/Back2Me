@@ -1,0 +1,47 @@
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Node modules (frontend + backend)
+back2me-frontend/node_modules/
+back2me-backend/node_modules/
+
+# Build output
+back2me-frontend/dist/
+back2me-frontend/.vite/
+back2me-backend/dist/
+
+# Environment variables
+back2me-backend/.env
+back2me-backend/.env.*
+back2me-frontend/.env
+back2me-frontend/.env.*
+
+# DB files
+*.sqlite
+*.sqlite3
+*.db
+db.sqlite3
+database.sqlite
+
+# Editor folders and system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Coverage and cache
+coverage/
+.nyc_output/
+.cache/
+.parcel-cache/
+.eslintcache
+
+# Misc
+*.tgz
+.pnp.*
+.yarn-integrity
+node_modules/
+temp/
+tmp/
