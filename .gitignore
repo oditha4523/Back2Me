@@ -24,6 +24,8 @@ back2me-frontend/.env.*
 *.db
 db.sqlite3
 database.sqlite
+/uploads
+
 
 # Editor folders and system files
 .vscode/
