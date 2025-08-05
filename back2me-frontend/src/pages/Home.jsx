@@ -1,9 +1,8 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import Navbar from '../components/navbar';
-import HomeCarousel from '../components/HomeCarousel';
-import girlImg from '../assets/girl-img.png';
-
+import girlImg from '../assets/mobile.jpg';
+import heroImage from '../assets/hero-image.jpg';
 
 const Home = () => {
   const containerVariants = {
@@ -41,37 +40,58 @@ const Home = () => {
     }
   };
 
+  const imageVariants = {
+    hidden: { x: 50, opacity: 0 },
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: {
+        duration: 1,
+        ease: "easeOut"
+      }
+    }
+  };
+
   return (
     <>
       <Navbar />
       
-      <div className="min-h-screen bg-gray-50">
-        <div className="container mx-auto px-4 py-8">
+      <div className="min-h-screen bg-gradient-to-br from-blue-600 via-purple-700 to-indigo-800 relative">
+        {/* Optional overlay for better text readability */}
+        <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+        
+        <div className="container mx-auto px-4 pt-4 relative z-10">
           <motion.div 
-            className="flex flex-col lg:flex-row items-center justify-center gap-8"
+            className="flex justify-between items-center min-h-[50vh]"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
           >
-            {/* Left side - Text content */}
+            {/* Left-aligned Text content */}
             <motion.div 
-              className="flex-1 lg:pr-8 lg:pl-4 max-w-2xl"
+              className="max-w-4xl text-left flex-1"
               variants={itemVariants}
             >
               <motion.h1 
-                className="text-2xl sm:text-3xl lg:text-8xl text-gray-800 mb-6 lg:mb-8 text-center lg:text-left lg:ml-0"
+                className="text-2xl sm:text-6xl md:text-6xl lg:text-8xl text-white mb-6 lg:mb-8 pb-20 drop-shadow-2xl"
+                style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)' }}
                 variants={textVariants}
               >
                 Together,<br />We bring it <br />Back.
               </motion.h1>
             </motion.div>
-            
-            {/* Right side - Carousel */}
+
+            {/* Right-side Hero Image */}
             <motion.div 
-              className="flex-1 lg:pl-8 w-full max-w-3xl flex justify-center"
+              className="hidden md:flex flex-1 justify-center items-center"
               variants={itemVariants}
             >
-              <HomeCarousel />
+              <motion.img 
+                src={heroImage}
+                alt="Hero illustration"
+                className="w-full max-w-xs lg:max-w-md h-auto object-contain"
+                variants={imageVariants}
+              />
             </motion.div>
           </motion.div>
         </div>
@@ -79,7 +99,7 @@ const Home = () => {
 
       {/* New Section */}
       <motion.section 
-        className="py-16 bg-gray-50"
+        className="py-16 bg-black"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
@@ -88,7 +108,7 @@ const Home = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <motion.h2 
-              className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-6"
+              className="text-3xl md:text-4xl lg:text-5xl text-gray-800 mb-6"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -119,12 +139,10 @@ const Home = () => {
               <img 
                 src={girlImg} 
                 alt="Girl using the app" 
-                className="w-full max-w-lg lg:max-w-2xl h-auto object-contain"
+                className="w-full max-w-[400px] lg:max-w-[520px] h-auto object-contain"
               />
             </motion.div>
-          </div>
-
-          
+          </div>      
         </div>
       </motion.section>
     </>
@@ -133,4 +151,3 @@ const Home = () => {
 
 export default Home
 
- 

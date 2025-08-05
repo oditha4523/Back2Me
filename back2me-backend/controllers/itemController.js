@@ -29,7 +29,6 @@ const addItem = async (req, res) => {
   }
 };
 
-
 // @desc    Get a single item by ID
 const getItemById = async (req, res) => {
   try {
