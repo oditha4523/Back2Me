@@ -20,7 +20,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white shadow-md sticky top-0 z-50">
+    <nav className="bg-black shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -41,13 +41,19 @@ const Navbar = () => {
                 <Link
                   key={link.name}
                   to={link.path}
-                  className={`px-3 py-2 text-sm font-medium transition-colors duration-200 ${
+                  className={`relative px-3 py-2 text-sm font-medium transition-all duration-300 ease-in-out transform hover:scale-105 ${
                     location.pathname === link.path
-                      ? 'text-green-600 border-b-2 border-green-600'
-                      : 'text-gray-700 hover:text-green-600 hover:border-b-2 hover:border-green-600'
-                  }`}
+                      ? 'text-green-400'
+                      : 'text-white hover:text-green-400'
+                  } group`}
                 >
                   {link.name}
+                  {/* Animated underline */}
+                  <span className={`absolute bottom-0 left-0 w-full h-0.5 bg-green-400 transform transition-all duration-300 ease-in-out ${
+                    location.pathname === link.path 
+                      ? 'scale-x-100' 
+                      : 'scale-x-0 group-hover:scale-x-100'
+                  }`}></span>
                 </Link>
               ))}
             </div>
@@ -57,15 +63,15 @@ const Navbar = () => {
           <div className="hidden md:block">
             {isLoggedIn ? (
               <div className="flex items-center space-x-4">
-                <button className="flex items-center space-x-2 text-gray-700 hover:text-green-600 transition-colors duration-200">
-                  <div className="h-6 w-6 bg-gray-300 rounded-full flex items-center justify-center">
+                <button className="flex items-center space-x-2 text-white hover:text-green-400 transition-all duration-300 ease-in-out transform hover:scale-105">
+                  <div className="h-6 w-6 bg-gray-600 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out hover:bg-gray-500">
                     <span className="text-xs">👤</span>
                   </div>
                   <span className="text-sm font-medium">Profile</span>
                 </button>
                 <button
                   onClick={() => setIsLoggedIn(false)}
-                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-3xl text-sm font-medium transition-colors duration-200"
+                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-3xl text-sm font-medium transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg"
                 >
                   Logout
                 </button>
@@ -77,16 +83,17 @@ const Navbar = () => {
                     setIsLoggedIn(true);
                     navigate('/login?mode=login');
                   }}
-                  className="text-gray-700 hover:text-green-600 px-3 py-2 text-sm font-medium transition-colors duration-200"
+                  className="text-white hover:text-green-400 px-3 py-2 text-sm font-medium transition-all duration-300 ease-in-out transform hover:scale-105 relative group"
                 >
                   Login
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-green-400 transform scale-x-0 group-hover:scale-x-100 transition-all duration-300 ease-in-out"></span>
                 </button>
                 <button
                   onClick={() => {
                     setIsLoggedIn(true);
                     navigate('/login?mode=register');
                   }}
-                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-3xl text-sm font-medium transition-colors duration-200"
+                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-3xl text-sm font-medium transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg"
                 >
                   Sign Up
                 </button>
@@ -98,7 +105,7 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
-              className="text-gray-700 hover:text-green-600 focus:outline-none focus:text-green-600"
+              className="text-white hover:text-green-400 focus:outline-none focus:text-green-400 transition-all duration-300 ease-in-out transform hover:scale-110"
             >
               {isMenuOpen ? (
                 <span className="text-2xl">✕</span>
@@ -112,16 +119,16 @@ const Navbar = () => {
         {/* Mobile Navigation Menu */}
         {isMenuOpen && (
           <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200">
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-black border-t border-gray-700">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
                   to={link.path}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`block px-3 py-2 text-base font-medium transition-colors duration-200 ${
+                  className={`block px-3 py-2 text-base font-medium transition-all duration-300 ease-in-out transform hover:translate-x-2 ${
                     location.pathname === link.path
-                      ? 'text-green-600 bg-green-50'
-                      : 'text-gray-700 hover:text-green-600 hover:bg-gray-50'
+                      ? 'text-green-400 bg-gray-800'
+                      : 'text-white hover:text-green-400 hover:bg-gray-800'
                   }`}
                 >
                   {link.name}
@@ -129,11 +136,11 @@ const Navbar = () => {
               ))}
               
               {/* Mobile Auth Buttons */}
-              <div className="pt-4 border-t border-gray-200">
+              <div className="pt-4 border-t border-gray-700">
                 {isLoggedIn ? (
                   <div className="space-y-2">
-                    <button className="flex items-center space-x-2 w-full px-3 py-2 text-left text-gray-700 hover:text-green-600 hover:bg-gray-50">
-                      <div className="h-5 w-5 bg-gray-300 rounded-full flex items-center justify-center">
+                    <button className="flex items-center space-x-2 w-full px-3 py-2 text-left text-white hover:text-green-400 hover:bg-gray-800 transition-all duration-300 ease-in-out transform hover:translate-x-2">
+                      <div className="h-5 w-5 bg-gray-600 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out hover:bg-gray-500">
                         <span className="text-xs">👤</span>
                       </div>
                       <span>Profile</span>
@@ -143,7 +150,7 @@ const Navbar = () => {
                         setIsLoggedIn(false);
                         setIsMenuOpen(false);
                       }}
-                      className="w-full text-left px-3 py-2 text-red-600 hover:bg-red-50"
+                      className="w-full text-left px-3 py-2 text-red-400 hover:bg-gray-800 transition-all duration-300 ease-in-out transform hover:translate-x-2"
                     >
                       Logout
                     </button>
@@ -155,7 +162,7 @@ const Navbar = () => {
                         setIsLoggedIn(true);
                         setIsMenuOpen(false);
                       }}
-                      className="w-full text-left px-3 py-2 text-gray-700 hover:text-green-600 hover:bg-gray-50"
+                      className="w-full text-left px-3 py-2 text-white hover:text-green-400 hover:bg-gray-800 transition-all duration-300 ease-in-out transform hover:translate-x-2"
                     >
                       Login
                     </button>
@@ -164,7 +171,7 @@ const Navbar = () => {
                         setIsLoggedIn(true);
                         setIsMenuOpen(false);
                       }}
-                      className="w-full text-left px-3 py-2 bg-green-600 text-white hover:bg-green-700"
+                      className="w-full text-left px-3 py-2 bg-green-600 text-white hover:bg-green-700 transition-all duration-300 ease-in-out transform hover:translate-x-2"
                     >
                       Sign Up
                     </button>
