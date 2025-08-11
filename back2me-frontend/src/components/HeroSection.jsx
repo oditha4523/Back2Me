@@ -69,20 +69,20 @@ const HeroSection = () => {
       {/* Optional overlay for better text readability */}
       <div className="absolute inset-0 bg-black bg-opacity-20"></div>
       
-      <div className="container mx-auto px-4 pt-4 relative z-10">
+      <div className="container mx-auto px-6 md:px-4 pt-4 relative z-10">
         <motion.div 
-          className="flex justify-between items-center min-h-[50vh]"
+          className="grid grid-cols-1 md:grid-cols-2 gap-8 min-h-[80vh] items-center"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          {/* Left-aligned Text content */}
+          {/* Left Column - Text and Buttons */}
           <motion.div 
-            className="max-w-4xl text-left flex-1"
+            className="flex flex-col justify-center items-center md:items-start w-full"
             variants={itemVariants}
           >
             <motion.h1 
-              className="text-2xl sm:text-6xl md:text-6xl lg:text-8xl text-white mb-6 lg:mb-8 drop-shadow-2xl"
+              className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl text-white mb-8 ml-16 text-center md:text-left drop-shadow-2xl w-full"
               style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)' }}
               variants={textVariants}
             >
@@ -91,27 +91,27 @@ const HeroSection = () => {
             
             {/* Action Buttons */}
             <motion.div 
-              className="flex flex-col sm:flex-row gap-4 mt-8"
+              className="flex flex-row gap-3 h-14 ml-16 justify-center md:justify-start"
               variants={buttonVariants}
             >
               <Link 
                 to="/find"
-                className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-3xl text-lg font-medium transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg text-center w-full sm:w-48"
+                className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 md:px-8 md:py-3 rounded-4xl text-sm md:text-lg font-small transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg text-center w-32 md:w-40"
               >
                 Find Item
               </Link>
               <Link 
                 to="/report"
-                className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-3xl text-lg font-medium transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg text-center w-full sm:w-48"
+                className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 md:px-8 md:py-3 rounded-4xl text-sm md:text-lg font-small transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg text-center w-32 md:w-40"
               >
                 Report Item
               </Link>
             </motion.div>
           </motion.div>
 
-          {/* Right-side Hero Image */}
+          {/* Right Column - Hero Image */}
           <motion.div 
-            className="hidden md:flex flex-1 justify-center items-center"
+            className="flex justify-center pl-16 items-center"
             variants={itemVariants}
           >
             <motion.img 
