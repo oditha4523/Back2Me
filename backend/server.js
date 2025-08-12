@@ -3,6 +3,9 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
+import claimRoutes from './routes/claimRoutes.js';
+
+
 
 // 2. Load environment variables from .env
 dotenv.config();
@@ -24,6 +27,10 @@ app.use(express.json());
 
 // 8. Mount routes
 app.use('/api/items', itemRoutes); // All item-related routes will start with /api/items
+
+app.use('/api/claims', claimRoutes); // All claim-related routes will start with /api/claims
+
+app.use('/api/auth', require('./routes/authRoutes'));
 
 // 9. Default route (optional)
 app.get('/', (req, res) => {
