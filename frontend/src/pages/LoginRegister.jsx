@@ -1,113 +1,167 @@
-// import React, { useState } from "react";
-// import "./style.css";
-// import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
 
-// export default function LoginRegister() {
-  
-//   const [active, setActive] = useState(false);
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
 
-//   return (
-//     <div className={`container ${active ? "active" : ""}`}>
-//       {/* Login Form */}
-//       <div className="form-box login">
-//         <form autoComplete="off">
-//           <h1>Log in</h1>
-//           <div className="input-box">
-//             <input
-//               type="text"
-//               id="login-username"
-//               name="login-username"
-//               placeholder="Username"
-//               required
-//             />
-//             <span className="input-icon"><FaUser /></span>
-//           </div>
-//           <div className="input-box">
-//             <input
-//               type="password"
-//               id="login-password"
-//               name="login-password"
-//               placeholder="Password"
-//               required
-//             />
-//             <span className="input-icon"><FaLock /></span>
-//           </div>
-//           <div className="forgot-link">
-//             <a href="#">Forgot Password?</a>
-//           </div>
-//           <button type="submit" className="btn">
-//             Log In
-//           </button>
-//         </form>
-//       </div>
+export default function LoginRegister() {
+  const [searchParams] = useSearchParams();
+  const [active, setActive] = useState(false);
 
-//       {/* Register Form */}
-//       <div className="form-box register">
-//         <form autoComplete="off">
-//           <h1>Register</h1>
-//           <div className="input-box">
-//             <input
-//               type="text"
-//               id="register-username"
-//               name="register-username"
-//               placeholder="Username"
-//               required
-//             />
-//             <span className="input-icon"><FaUser /></span>
-//           </div>
-//           <div className="input-box">
-//             <input
-//               type="email"
-//               id="register-email"
-//               name="register-email"
-//               placeholder="Email"
-//               required
-//             />
-//             <span className="input-icon"><FaEnvelope /></span>
-//           </div>
-//           <div className="input-box">
-//             <input
-//               type="password"
-//               id="register-password"
-//               name="register-password"
-//               placeholder="Password"
-//               required
-//             />
-//             <span className="input-icon"><FaLock /></span>
-//           </div>
-//           <button type="submit" className="btn">
-//             Register
-//           </button>
-//         </form>
-//       </div>
+  useEffect(() => {
 
-//       {/* Toggle Panels */}
-//       <div className="toggle-box">
-//         <div className="toggle-panel toggle-left">
-//           <h1>Join the Back2Me Community!</h1>
-//           <p>Let's make the world a little kinder.</p>
-//           <p> Sign up to post found items or reclaim what you've lost. It's quick, secure, and free. </p>
-//           <button
-//             className="btn register-btn"
-//             type="button"
-//             onClick={() => setActive(true)}
-//           >
-//             Register
-//           </button>
-//         </div>
-//         <div className="toggle-panel toggle-right">
-//           <h1>Welcome Back!</h1>
-//           <p>Ready to reunite something today?</p>
-//           <p>Log in to find, report, or help return lost items through <span className="font-semibold">Back2Me</span>.</p>
-//           <button
-//             className="btn login-btn"
-//             type="button"
-//             onClick={() => setActive(false)}
-//           >
-//             Login
-//           </button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
+    const mode = searchParams.get("mode");
+    setActive(mode === "register");
+  }, [searchParams]);
+
+  return (
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-green-100 via-green-50 to-white">
+      <div className="relative w-[850px] max-w-[95%] h-[550px] bg-white rounded-3xl shadow-lg overflow-hidden">
+        {/* Login Form */}
+        <div className={`absolute top-0 w-1/2 h-full p-10 flex items-center text-center transition-all duration-700 ease-in-out
+          ${active ? 'translate-x-[-100%] opacity-0' : 'right-0 opacity-100'}`}>
+          <form className="w-full space-y-6">
+            <h1 className="text-4xl font-bold mb-4 text-green-600 tracking-tight">Sign In</h1>
+            <p className="text-gray-600 text-sm mb-6">
+              Welcome back to Back2Me
+            </p>
+            
+            <div className="relative">
+              <input 
+                type="text" 
+                placeholder="Username" 
+                className="w-full py-3.5 px-12 bg-green-50/50 rounded-xl text-gray-700 text-sm font-medium
+                border border-green-100 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-200
+                transition-all duration-200" 
+              />
+              <FaUser className="absolute right-4 top-1/2 -translate-y-1/2 text-green-400 text-lg" />
+            </div>
+            
+            <div className="relative">
+              <input 
+                type="password" 
+                placeholder="Password" 
+                className="w-full py-3.5 px-12 bg-green-50/50 rounded-xl text-gray-700 text-sm font-medium
+                border border-green-100 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-200
+                transition-all duration-200" 
+              />
+              <FaLock className="absolute right-4 top-1/2 -translate-y-1/2 text-green-400 text-lg" />
+            </div>
+
+            <div className="flex justify-between items-center text-sm">
+              <label className="flex items-center text-gray-600 cursor-pointer group">
+                <input type="checkbox" className="w-4 h-4 rounded border-green-200 text-green-500 
+                focus:ring-green-200 focus:ring-offset-0 transition-all duration-200" />
+                <span className="ml-2 group-hover:text-green-600 transition-colors">Remember me</span>
+              </label>
+              <a href="#" className="text-green-600 hover:text-green-700 transition-colors">Forgot Password?</a>
+            </div>
+
+            <button className="w-full py-3.5 rounded-xl bg-green-500 text-white font-semibold text-sm
+              hover:bg-green-600 active:scale-[0.99] transition-all duration-200 shadow-lg shadow-green-200">
+              Log in
+            </button>
+          </form>
+        </div>
+
+        {/* Register Form */}
+        <div className={`absolute top-0 w-1/2 h-full p-10 flex items-center text-center transition-all duration-700 ease-in-out
+          ${active ? 'left-0 opacity-100 visible' : 'right-[-50%] opacity-0 invisible'}`}>
+          <form className="w-full space-y-6">
+            <h1 className="text-4xl font-bold mb-4 text-green-600 tracking-tight">Sign Up</h1>
+            <p className="text-gray-600 text-sm mb-6">
+              Join our lost and found community
+            </p>
+
+            <div className="relative">
+              <input 
+                type="text" 
+                placeholder="Username" 
+                className="w-full py-3.5 px-12 bg-green-50/50 rounded-xl text-gray-700 text-sm font-medium
+                border border-green-100 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-200
+                transition-all duration-200" 
+              />
+              <FaUser className="absolute right-4 top-1/2 -translate-y-1/2 text-green-400 text-lg" />
+            </div>
+
+            <div className="relative">
+              <input 
+                type="email" 
+                placeholder="Email" 
+                className="w-full py-3.5 px-12 bg-green-50/50 rounded-xl text-gray-700 text-sm font-medium
+                border border-green-100 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-200
+                transition-all duration-200" 
+              />
+              <FaEnvelope className="absolute right-4 top-1/2 -translate-y-1/2 text-green-400 text-lg" />
+            </div>
+
+            <div className="relative">
+              <input 
+                type="password" 
+                placeholder="Password" 
+                className="w-full py-3.5 px-12 bg-green-50/50 rounded-xl text-gray-700 text-sm font-medium
+                border border-green-100 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-200
+                transition-all duration-200" 
+              />
+              <FaLock className="absolute right-4 top-1/2 -translate-y-1/2 text-green-400 text-lg" />
+            </div>
+
+            <button className="w-full py-3.5 rounded-xl bg-green-500 text-white font-semibold text-sm
+              hover:bg-green-600 active:scale-[0.99] transition-all duration-200 shadow-lg shadow-green-200">
+              Register
+            </button>
+          </form>
+        </div>
+
+        {/* Panel Content */}
+        {/* Left Panel */}
+        <div className={`absolute left-0 w-1/2 h-full flex flex-col justify-center items-center z-[1] 
+          text-white text-center p-10 transition-all duration-700 ease-in-out
+          ${active ? 'translate-x-[100%] opacity-0 invisible' : 'translate-x-0 opacity-100 visible'}`}>
+          <h1 className="text-4xl font-bold mb-6 tracking-tight">New Here?</h1>
+          <p className="text-white/95 text-xl mb-4 max-w-[80%] font-medium">
+            Create an account to get started
+          </p>
+          <p className="text-white/80 text-sm mb-8 max-w-[75%] leading-6">
+            Create an account to start reporting found items or searching for lost belongings.
+          </p>
+          <button 
+            onClick={() => setActive(true)}
+            className="px-10 py-3 border-2 border-white rounded-xl text-sm font-semibold
+            hover:bg-white hover:text-green-600 transition-all duration-200"
+          >
+            Register
+          </button>
+        </div>
+
+        {/* Right Panel */}
+        <div className={`absolute right-0 w-1/2 h-full flex flex-col justify-center items-center z-[1] 
+          text-white text-center p-10 transition-all duration-700 ease-in-out
+          ${active ? 'translate-x-0 opacity-100 visible' : 'translate-x-[100%] opacity-0 invisible'}`}>
+          <h1 className="text-4xl font-bold mb-6 tracking-tight">Welcome Back</h1>
+          <p className="text-white/95 text-xl mb-4 max-w-[80%] font-medium">
+            Sign in to continue
+          </p>
+          <p className="text-white/80 text-sm mb-8 max-w-[75%] leading-6">
+            Sign in to access your account and connect with our community.
+          </p>
+          <button 
+            onClick={() => setActive(false)}
+            className="px-10 py-3 border-2 border-white rounded-xl text-sm font-semibold
+            hover:bg-white hover:text-green-600 transition-all duration-200"
+          >
+            Log in
+          </button>
+        </div>
+
+        {/* Sliding Background */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className={`absolute w-[300%] h-full bg-gradient-to-br from-green-600 via-green-500 to-green-400 
+            transition-all duration-[1800ms] ease-[cubic-bezier(0.2,0.8,0.2,1)]
+            ${active ? 'left-1/2' : 'left-[-250%]'}`}>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
