@@ -1,7 +1,7 @@
-import express from 'express';
-import { createClaim, getClaimsForItem } from '../controllers/claimController.js';
-import upload from '../middleware/upload.js';
-import authMiddleware from '../middleware/authMiddleware.js';
+const express = require('express');
+const { createClaim, getClaimsForItem } = require('../controllers/claimController');
+const upload = require('../middleware/uploadMiddleware');
+const authMiddleware = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
@@ -11,4 +11,4 @@ router.post('/', authMiddleware, upload.single('proofImage'), createClaim);
 // Get all claims for a specific item
 router.get('/:itemId', authMiddleware, getClaimsForItem);
 
-export default router;
+module.exports = router;

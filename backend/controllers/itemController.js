@@ -13,7 +13,7 @@ const getAllItems = async (req, res) => {
 // @desc    Create a new item post (by finder)
 const addItem = async (req, res) => {
   try {
-    const { name, description, location } = req.body;
+    const { name, description, location } = req.body;  // destructure the object
 
     const newItem = new Item({
       name,
