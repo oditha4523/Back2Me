@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
@@ -163,3 +164,4 @@ export default function LoginRegister() {
     </div>
   );
 }
+
