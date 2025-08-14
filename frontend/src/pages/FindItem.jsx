@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Navbar from '../components/navbar';
-import location from '../assets/images/12345.png';
+import GoogleMapsWrapper from '../components/GoogleMapsWrapper';
 import { FaSearch } from "react-icons/fa";
 
 const FindItem = () => {
@@ -50,12 +50,8 @@ const FindItem = () => {
             <div className="row-span-1 p-4 flex items-center">
               <h2 className="text-xl font-semibold">Found Items Map</h2>
             </div>
-            <div className="row-span-8 overflow-auto">
-              <img
-                src={location}
-                alt="Map Placeholder"
-                className="w-full h-full object-cover"
-              />
+            <div className="row-span-8">
+              <GoogleMapsWrapper />
             </div>
           </div>
 

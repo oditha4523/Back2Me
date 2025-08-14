@@ -5,7 +5,7 @@ import FindItem from './pages/FindItem';
 import ReportItem from './pages/ReportItem';
 import ReportItemForm from './components/ReportItemForm';
 import LearnMoreModal from './components/LearnMoreModal';
-// import LoginRegister from './pages/LoginRegister';
+import LoginRegister from './pages/LoginRegister';
 
 const App = () => {
   return (
@@ -17,8 +17,7 @@ const App = () => {
         <Route path="/services" element={<div>Services Page - Coming Soon</div>} />
         <Route path="/reportItemForm" element={<ReportItemForm/>} />
         <Route path="/reportItemLearnMore" element={<LearnMoreModal/>} />
-        {/* <Route path="/login" element={<LoginRegister/>} /> */}
-
+        <Route path="/login" element={<LoginRegister/>} />
       </Routes>
     </BrowserRouter>
   )
