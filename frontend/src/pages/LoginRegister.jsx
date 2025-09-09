@@ -42,7 +42,7 @@ export default function LoginRegister() {
       localStorage.setItem("token", res.data.token); // save token
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      navigate("/profile"); // go to profile page
+      navigate("/"); 
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
     } finally {
