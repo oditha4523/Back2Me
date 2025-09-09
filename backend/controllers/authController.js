@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
-// const generateToken = require('../utils/generateToken');
 const jwt = require('jsonwebtoken');
 const QRCode = require('qrcode');
 
@@ -35,7 +34,7 @@ const registerUser = async (req, res) => {
 
     // 5. Create user with QR code included
     const user = await User.create({
-      _id: tempId,         // assign the temp ID as _id
+      _id: tempId,     
       name,
       email,
       password: hashedPassword,
