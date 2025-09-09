@@ -1,7 +1,10 @@
+const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 // const generateToken = require('../utils/generateToken');
 const jwt = require('jsonwebtoken');
+const QRCode = require('qrcode');
+
 
 // @desc    Register user
 // @route   POST /api/auth/register
@@ -25,28 +28,34 @@ const registerUser = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // 4. Create user
+    // 4. Generate QR code before saving a user
+    const tempId = new mongoose.Types.ObjectId();
+    const qrData = `http://localhost:5173/user/${tempId}`;
+    const qrCode = await QRCode.toDataURL(qrData);
+
+    // 5. Create user with QR code included
     const user = await User.create({
+      _id: tempId,         // assign the temp ID as _id
       name,
       email,
-      password: hashedPassword
+      password: hashedPassword,
+      qrCode
     });
 
-    await user.save();
 
+     // 6. Generate JWT token
     const token = jwt.sign(
       { id: user._id, email: user.email },
       process.env.JWT_SECRET,
       { expiresIn: '1d' }
     );
 
-    // 5. Send response with token
-   res.status(201).json({
-      success: true,
-      user: { id: user._id, name: user.name, email: user.email },
-      token
-    });
-
+    // 7. Respond with user info and token
+    res.status(201).json({
+        success: true,
+        user: { id: user._id, name: user.name, email: user.email, qrCode: user.qrCode },
+        token
+      });
 
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
