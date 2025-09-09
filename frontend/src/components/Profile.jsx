@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import axios from 'axios';
 import { FiDownload } from "react-icons/fi";
 import { IoMdContacts } from "react-icons/io";
 import { RiAttachment2 } from "react-icons/ri";
@@ -6,6 +7,22 @@ import userimage from '../assets/userProfile.jpg';
 import Navbar from './navbar';
 
 const Profile = () => {
+
+  const [qrCode, setQrCode] = useState(null);
+  const [showQR, setShowQR] = useState(false);
+
+  // Fetch QR Code from backend
+  const fetchQrCode = async () => {
+    try {
+      // TODO: replace USER_ID_HERE with actual logged-in user ID from auth context/localStorage
+      const res = await axios.get("http://localhost:5000/api/qr/689c3a686f8424b185c2f922");
+      setQrCode(res.data.qrCode);
+      setShowQR(true);
+    } catch (err) {
+      console.error("Error fetching QR Code:", err);
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -20,7 +37,9 @@ const Profile = () => {
               className="w-32 h-32 rounded-full object-cover shadow-md"
             />
             <p className="text-xl font-semibold text-gray-800">Bang Tannies</p>
-            <button className="bg-teal-500 text-white px-6 py-2 rounded-full hover:bg-teal-600 transition">
+            <button 
+              onClick={fetchQrCode}
+              className="bg-teal-500 text-white px-6 py-2 rounded-full hover:bg-teal-600 transition">
               QR Code
             </button>
           </div>
@@ -89,6 +108,34 @@ const Profile = () => {
           </div>
 
         </div>
+
+        {/* Fullscreen QR Modal */}
+          {showQR && qrCode && (
+            <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+              <div className="relative bg-white p-6 rounded-lg shadow-xl flex flex-col items-center">
+                {/* Close button */}
+                <button 
+                  onClick={() => setShowQR(false)} 
+                  className="absolute top-2 right-2 text-gray-600 hover:text-black text-xl"
+                >
+                  ✖
+                </button>
+
+                {/* QR Image */}
+                <img src={qrCode} alt="QR Code" className="w-64 h-64 mb-4" />
+
+                {/* Download button */}
+                <a 
+                  href={qrCode} 
+                  download="my-qrcode.png" 
+                  className="flex items-center gap-2 bg-teal-500 text-white px-6 py-2 rounded-full hover:bg-teal-600 transition"
+                >
+                  <FiDownload /> Download QR
+                </a>
+              </div>
+            </div>
+          )}
+
       </div>
     </>
   )
