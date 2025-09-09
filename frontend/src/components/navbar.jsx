@@ -1,18 +1,20 @@
 import React, { useState} from 'react';
 import { Link, useLocation , useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
+import { getUser, isLoggedIn, logout } from "../utils/auth";
+import { LogOut } from "lucide-react";
 
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+  const [showDropdown, setShowDropdown] = useState(false);
+  const user = getUser();
 
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'FindItem', path: '/find' },
     { name: 'ReportItem', path: '/report' },
-    { name: 'Services', path: '/services' }
   ];
 
   const toggleMenu = () => {
@@ -60,39 +62,66 @@ const Navbar = () => {
           </div>
 
           {/* Desktop User Profile / Auth Buttons */}
-          <div className="hidden md:block">
-            {isLoggedIn ? (
+          <div className="hidden md:block relative">
+            {isLoggedIn() ? (
               <div className="flex items-center space-x-4">
-                <button className="flex items-center space-x-2 text-white hover:text-green-400 transition-all duration-300 ease-in-out transform hover:scale-105">
-                  <div className="h-6 w-6 bg-gray-600 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out hover:bg-gray-500">
-                    <span className="text-xs">👤</span>
-                  </div>
-                  <span className="text-sm font-medium">Profile</span>
-                </button>
-                <button
-                  onClick={() => setIsLoggedIn(false)}
-                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-3xl text-sm font-medium transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg"
-                >
-                  Logout
-                </button>
+                {/* Wrap profile button and dropdown in a relative container */}
+                <div className="relative">
+                  {/* Profile button toggles dropdown */}
+                  <button
+                    onClick={() => setShowDropdown(!showDropdown)}
+                    className="flex items-center space-x-2 text-white hover:text-green-400 transition-all duration-300 ease-in-out transform hover:scale-105"
+                  >
+                    <div className="h-8 w-8 bg-gray-600 rounded-full flex items-center justify-center overflow-hidden">
+                      <img
+                        src={user?.avatar || "https://via.placeholder.com/40"}
+                        alt="profile"
+                        className="w-full h-full object-cover rounded-full"
+                      />
+                    </div>
+                    <span className="text-sm font-medium">{user?.name || "Profile"}</span>
+                  </button>
+
+                  {/* Dropdown with arrow */}
+                  {showDropdown && (
+                    <div className="absolute right-0 mt-2 w-40 bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-50">
+                      {/* Arrow */}
+                      <div className="absolute -top-2 right-3 w-3 h-3 bg-gray-900 transform rotate-45 border-l border-t border-gray-700"></div>
+
+                      <button
+                        onClick={() => {
+                          navigate("/profile");
+                          setShowDropdown(false);
+                        }}
+                        className="flex items-center w-full px-4 py-2 text-white hover:text-green-400 hover:bg-gray-800 rounded-t-lg"
+                      >
+                        Profile
+                      </button>
+                      <button
+                        onClick={() => {
+                          logout();
+                          navigate("/");
+                          setShowDropdown(false);
+                        }}
+                        className="flex items-center w-full px-4 py-2 text-white hover:text-green-400 hover:bg-gray-800 rounded-b-lg"
+                      >
+                        <LogOut size={18} className="mr-2" />
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             ) : (
               <div className="flex items-center space-x-3">
                 <button
-                  onClick={() => {
-                    setIsLoggedIn(true);
-                    navigate('/login?mode=login');
-                  }}
+                  onClick={() => navigate("/login?mode=login")}
                   className="text-white hover:text-green-400 px-3 py-2 text-sm font-medium transition-all duration-300 ease-in-out transform hover:scale-105 relative group"
                 >
                   Login
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-green-400 transform scale-x-0 group-hover:scale-x-100 transition-all duration-300 ease-in-out"></span>
                 </button>
                 <button
-                  onClick={() => {
-                    setIsLoggedIn(true);
-                    navigate('/login?mode=register');
-                  }}
+                  onClick={() => navigate("/login?mode=register")}
                   className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-3xl text-sm font-medium transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg"
                 >
                   Sign Up
@@ -100,6 +129,8 @@ const Navbar = () => {
               </div>
             )}
           </div>
+
+
 
           {/* Mobile menu button */}
           <div className="md:hidden">
@@ -137,40 +168,46 @@ const Navbar = () => {
               
               {/* Mobile Auth Buttons */}
               <div className="pt-4 border-t border-gray-700">
-                {isLoggedIn ? (
+                {isLoggedIn() ? (
                   <div className="space-y-2">
-                    <button className="flex items-center space-x-2 w-full px-3 py-2 text-left text-white hover:text-green-400 hover:bg-gray-800 transition-all duration-300 ease-in-out transform hover:translate-x-2">
+                    <button
+                      onClick={() => {
+                        navigate("/profile");
+                        setIsMenuOpen(false);
+                      }}
+                      className="flex items-center space-x-2 w-full px-3 py-2 text-left text-white hover:text-green-400 hover:bg-gray-800 transition-all duration-300 ease-in-out transform hover:translate-x-2"
+                    >
                       <div className="h-5 w-5 bg-gray-600 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out hover:bg-gray-500">
-                        <span className="text-xs">👤</span>
+                        <img
+                          src={user?.avatar || "https://via.placeholder.com/40"}
+                          alt="profile"
+                          className="w-full h-full object-cover rounded-full"
+                        />
                       </div>
-                      <span>Profile</span>
+                      <span>{user?.name || "Profile"}</span>
                     </button>
                     <button
                       onClick={() => {
-                        setIsLoggedIn(false);
+                        logout();
+                        navigate("/");
                         setIsMenuOpen(false);
                       }}
-                      className="w-full text-left px-3 py-2 text-red-400 hover:bg-gray-800 transition-all duration-300 ease-in-out transform hover:translate-x-2"
+                      className="flex items-center w-full px-3 py-2 text-left text-white hover:text-green-400 hover:bg-gray-800 transition-all duration-300 ease-in-out transform hover:translate-x-2"
                     >
+                      <LogOut size={18} className="mr-2" />
                       Logout
                     </button>
                   </div>
                 ) : (
                   <div className="space-y-2">
                     <button
-                      onClick={() => {
-                        setIsLoggedIn(true);
-                        setIsMenuOpen(false);
-                      }}
+                      onClick={() => navigate("/login?mode=login")}
                       className="w-full text-left px-3 py-2 text-white hover:text-green-400 hover:bg-gray-800 transition-all duration-300 ease-in-out transform hover:translate-x-2"
                     >
                       Login
                     </button>
                     <button
-                      onClick={() => {
-                        setIsLoggedIn(true);
-                        setIsMenuOpen(false);
-                      }}
+                      onClick={() => navigate("/login?mode=register")}
                       className="w-full text-left px-3 py-2 bg-green-600 text-white hover:bg-green-700 transition-all duration-300 ease-in-out transform hover:translate-x-2"
                     >
                       Sign Up
