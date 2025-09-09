@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams, useNavigate  } from "react-router-dom";
 import axios from "axios";
-import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
+import { FaUser, FaLock, FaEnvelope, FaPhone } from "react-icons/fa";
 
 export default function LoginRegister() {
   const [searchParams] = useSearchParams();
@@ -17,6 +17,7 @@ export default function LoginRegister() {
   const [regName, setRegName] = useState("");
   const [regEmail, setRegEmail] = useState("");
   const [regPassword, setRegPassword] = useState("");
+  const [regPhone, setRegPhone] = useState("");
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -61,12 +62,13 @@ export default function LoginRegister() {
         name: regName,
         email: regEmail,
         password: regPassword,
+        phone: regPhone,
       });
 
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      navigate("/profile");
+      navigate("/");
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
     } finally {
@@ -92,6 +94,7 @@ export default function LoginRegister() {
               <input 
                 type="email" 
                 placeholder="Email" 
+                value={loginEmail}
                 onChange={(e) => setLoginEmail(e.target.value)}
                 className="w-full py-3.5 px-12 bg-green-50/50 rounded-xl text-gray-700 text-sm font-medium
                 border border-green-100 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-200
@@ -163,6 +166,19 @@ export default function LoginRegister() {
                 transition-all duration-200" 
               />
               <FaEnvelope className="absolute right-4 top-1/2 -translate-y-1/2 text-green-400 text-lg" />
+            </div>
+
+            <div className="relative">
+              <input 
+                type="tel" 
+                placeholder="Phone Number" 
+                value={regPhone}
+                onChange={(e) => setRegPhone(e.target.value)}
+                className="w-full py-3.5 px-12 bg-green-50/50 rounded-xl text-gray-700 text-sm font-medium
+                border border-green-100 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-200
+                transition-all duration-200" 
+              />
+              <FaPhone className="absolute right-4 top-1/2 -translate-y-1/2 text-green-400 text-lg" />
             </div>
 
             <div className="relative">

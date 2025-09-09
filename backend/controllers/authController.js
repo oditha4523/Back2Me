@@ -10,11 +10,11 @@ const QRCode = require('qrcode');
 // @route   POST /api/auth/register
 // @access  Public
 const registerUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, phone } = req.body;
 
   try {
     // 1. Check all fields
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !phone) {
       return res.status(400).json({ message: 'Please fill all fields' });
     }
 
@@ -39,6 +39,7 @@ const registerUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      phone,
       qrCode
     });
 
@@ -53,7 +54,7 @@ const registerUser = async (req, res) => {
     // 7. Respond with user info and token
     res.status(201).json({
         success: true,
-        user: { id: user._id, name: user.name, email: user.email, qrCode: user.qrCode },
+        user: { id: user._id, name: user.name, email: user.email, phone: user.phone, qrCode: user.qrCode, createdAt: user.createdAt },
         token
       });
 
@@ -84,14 +85,14 @@ const login = async (req, res) => {
     // 3. Generate JWT token
     const token = jwt.sign(
       { id: user._id, email: user.email },
-      process.env.JWT_SECRET, // make sure you have this in .env
+      process.env.JWT_SECRET, 
       { expiresIn: '1d' }
     );
 
     // 4. Respond with user info + token
     res.status(200).json({
       success: true,
-      user: { id: user._id, name: user.name, email: user.email },
+      user: { id: user._id, name: user.name, email: user.email, phone: user.phone, createdAt: user.createdAt  },
       token
     });
 

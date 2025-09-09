@@ -5,17 +5,18 @@ import { IoMdContacts } from "react-icons/io";
 import { RiAttachment2 } from "react-icons/ri";
 import userimage from '../assets/userProfile.jpg';
 import Navbar from './navbar';
+import { getUser } from '../utils/auth';
 
 const Profile = () => {
 
   const [qrCode, setQrCode] = useState(null);
   const [showQR, setShowQR] = useState(false);
+  const [userInfo, setUserInfo] = useState(getUser());
 
   // Fetch QR Code from backend
   const fetchQrCode = async () => {
     try {
-      // TODO: replace USER_ID_HERE with actual logged-in user ID from auth context/localStorage
-      const res = await axios.get("http://localhost:5000/api/qr/689c3a686f8424b185c2f922");
+      const res = await axios.get(`http://localhost:5000/api/qr/${userInfo.id}`);
       setQrCode(res.data.qrCode);
       setShowQR(true);
     } catch (err) {
@@ -36,7 +37,7 @@ const Profile = () => {
               alt="Profile"
               className="w-32 h-32 rounded-full object-cover shadow-md"
             />
-            <p className="text-xl font-semibold text-gray-800">Bang Tannies</p>
+            <p className="text-xl font-semibold text-gray-800">{userInfo?.name}</p>
             <button 
               onClick={fetchQrCode}
               className="bg-teal-500 text-white px-6 py-2 rounded-full hover:bg-teal-600 transition">
@@ -49,7 +50,7 @@ const Profile = () => {
             <div>
               <label className="block text-sm font-semibold text-gray-700">Email Address</label>
               <input
-                placeholder="tannies7@gmail.com"
+                value={userInfo?.email || ''}
                 className="w-full h-10 bg-gray-100 rounded px-3 outline-none text-gray-700"
                 readOnly
               />
@@ -57,14 +58,15 @@ const Profile = () => {
             <div>
               <label className="block text-sm font-semibold text-gray-700">Phone Number</label>
               <input
-                placeholder="+9477 034 543"
+                value={userInfo?.phone || ''}
                 className="w-full h-10 bg-gray-100 rounded px-3 outline-none text-gray-700"
+                readOnly
               />
             </div>
             <div>
               <label className="block text-sm font-semibold text-gray-700">Member Since</label>
               <input
-                placeholder="June 13, 2025"
+                value={userInfo ? new Date(userInfo.createdAt).toLocaleDateString() : ''}
                 className="w-full h-10 bg-gray-100 rounded px-3 outline-none text-gray-700"
                 readOnly
               />
