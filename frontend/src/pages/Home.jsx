@@ -5,11 +5,12 @@ import HowItWorksSection from '../components/HowItWorksSection';
 
 const Home = () => {
   return (
-    <>
-      <Navbar />
-      <HeroSection />
-      <HowItWorksSection />
-    </>
+      <div className="min-h-screen" style={{ backgroundColor: '#1F211F' }}>
+        <Navbar />
+        <HeroSection />
+        <HowItWorksSection />
+      </div>
+
   )
 }
 
