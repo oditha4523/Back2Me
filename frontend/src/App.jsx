@@ -6,6 +6,7 @@ import ReportItem from './pages/ReportItem';
 import ReportItemForm from './components/ReportItemForm';
 import LearnMoreModal from './components/LearnMoreModal';
 import LoginRegister from './pages/LoginRegister';
+import Profile from './components/Profile';
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/reportItemForm" element={<ReportItemForm/>} />
         <Route path="/reportItemLearnMore" element={<LearnMoreModal/>} />
         <Route path="/login" element={<LoginRegister/>} />
+        <Route path="/profile" element={<Profile/>} />
       </Routes>
     </BrowserRouter>
   )

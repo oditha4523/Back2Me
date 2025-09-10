@@ -13,7 +13,11 @@ const userSchema = new mongoose.Schema({
   password: { 
     type: String, 
     required: true 
-  }
+  },
+
+  qrCode: {
+    type: String, 
+    unique: true },
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);
