@@ -1,7 +1,8 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import heroImage from '../assets/hero-image.jpg';
+import heroImage from '../assets/hero-background.png';
+import worldMapImage from '../assets/world-map.png'; // Add this import
 
 const HeroSection = () => {
   const containerVariants = {
@@ -65,9 +66,21 @@ const HeroSection = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black relative">
-      {/* Optional overlay for better text readability */}
-      <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+    <div 
+      className="min-h-screen relative"
+      style={{ backgroundColor: '#050505ff' }}
+    >
+      {/* World Map Background */}
+      <div 
+        className="absolute inset-0 bg-no-repeat bg-center bg-cover opacity-35"
+        style={{ 
+          backgroundImage: `url(${worldMapImage})`,
+          backgroundSize: 'contain',
+          backgroundPosition: 'center',
+        }}
+      ></div>
+      
+    
       
       <div className="container mx-auto px-6 md:px-4 pt-4 relative z-10">
         <motion.div 
@@ -82,7 +95,7 @@ const HeroSection = () => {
             variants={itemVariants}
           >
             <motion.h1 
-              className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl text-white mb-8 ml-16 text-center md:text-left drop-shadow-2xl w-full"
+              className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl text-white pb-8 pl-16 text-center md:text-left drop-shadow-2xl w-full"
               style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)' }}
               variants={textVariants}
             >
@@ -91,7 +104,7 @@ const HeroSection = () => {
             
             {/* Action Buttons */}
             <motion.div 
-              className="flex flex-row gap-3 h-14 ml-16 justify-center md:justify-start"
+              className="flex flex-row gap-3 h-14 pl-16 justify-center md:justify-start"
               variants={buttonVariants}
             >
               <Link 
@@ -117,7 +130,7 @@ const HeroSection = () => {
             <motion.img 
               src={heroImage}
               alt="Hero illustration"
-              className="w-full max-w-xs lg:max-w-md h-auto object-contain"
+              className="w-full max-w-md lg:max-w-lg xl:max-w-xl h-auto object-contain"
               variants={imageVariants}
             />
           </motion.div>
