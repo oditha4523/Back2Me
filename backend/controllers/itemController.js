@@ -13,18 +13,34 @@ const getAllItems = async (req, res) => {
 // @desc    Create a new item post (by finder)
 const addItem = async (req, res) => {
   try {
-    const { name, description, location } = req.body;  // destructure the object
+    // If protect middleware is used, req.user will exist
+    if (!req.user) return res.status(401).json({ message: 'Not authorized' });
+
+    const { name, description, location, category } = req.body;
+
+    if (!name || !description || !location || !category) {
+      return res.status(400).json({ message: 'Please fill all fields' });
+    }
+
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : '';
 
     const newItem = new Item({
       name,
+      category,
       description,
       location,
-      imageUrl: req.file ? `/uploads/${req.file.filename}` : '',
+      imageUrl,
+      reporter: {
+        id: req.user._id,
+        name: req.user.name,
+        email: req.user.email,
+      },
     });
 
     const savedItem = await newItem.save();
     res.status(201).json(savedItem);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: 'Failed to add item' });
   }
 };

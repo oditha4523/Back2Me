@@ -3,11 +3,23 @@ import Navbar from '../components/navbar';
 import { useNavigate } from 'react-router-dom';
 import LearnMoreModal from '../components/LearnMoreModal';
 import ReportItemModel from '../components/ReportItemModel';
+import LoginPromptModal from '../components/LoginPromptModal';
+import { isLoggedIn } from '../utils/auth';
 
 const ReportItem = () => {
   const navigate = useNavigate();
   const [showLearnMore, setShowLearnMore] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  
+
+    const handleReportClick = () => {
+    if (!isLoggedIn()) {
+      setShowLoginPrompt(true);
+      return;
+    }
+    setShowReportModal(true);
+  };
 
   return (
     <div className="flex flex-col h-screen overflow-hidden">
@@ -31,7 +43,7 @@ const ReportItem = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               className="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition duration-300 cursor-pointer"
-              onClick={() => setShowReportModal(true)}
+              onClick={handleReportClick}
             >
               Report Found Item
             </button>
@@ -46,6 +58,7 @@ const ReportItem = () => {
       </div>
 
       {/* Modal */}
+      <LoginPromptModal open={showLoginPrompt} onClose={() => setShowLoginPrompt(false)} />
       <LearnMoreModal open={showLearnMore} onClose={() => setShowLearnMore(false)} />
       <ReportItemModel open={showReportModal} onClose={() => setShowReportModal(false)} />
     </div>

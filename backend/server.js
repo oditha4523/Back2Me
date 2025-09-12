@@ -7,6 +7,7 @@ const claimRoutes = require('./routes/claimRoutes');
 
 
 
+
 // 2. Load environment variables from .env
 dotenv.config();
 // 3. Import database connection function
@@ -18,6 +19,14 @@ const app = express();
 
 // 6. Connect to MongoDB
 connectDB();
+
+//Create uploads folder
+const fs = require('fs');
+
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
 
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
