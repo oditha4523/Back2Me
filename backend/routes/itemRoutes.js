@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const upload =require('../middleware/uploadMiddleware')
+const protect = require('../middleware/authMiddleware');
 
 const {
   getAllItems,
@@ -10,7 +11,7 @@ const {
 } = require('../controllers/itemController');
 
 router.get('/', getAllItems);
-router.post('/',upload.single('image'), addItem);
+router.post('/', protect, upload.single('image'), addItem);
 router.get('/:id', getItemById);
 router.delete('/:id', deleteItem);
 

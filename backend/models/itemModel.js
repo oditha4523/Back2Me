@@ -18,6 +18,11 @@ const itemSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    reporter: {
+      id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+      name: { type: String },
+      email: { type: String },
+    },
     isClaimed: {
       type: Boolean,
       default: false,

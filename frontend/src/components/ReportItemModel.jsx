@@ -1,16 +1,82 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getUser } from '../utils/auth';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const ReportItemModel = ({ open, onClose }) => {
   const navigate = useNavigate();
   const [category, setCategory] = useState('');
+  const [itemName, setItemName] = useState('');
+  const [location, setLocation] = useState('');
+  const [description, setDescription] = useState('');
+  const [imageFile, setImageFile] = useState(null);
+  const [user, setUser] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    const u = getUser();
+    setUser(u);
+  }, []);
 
   if (!open) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert('Report submitted successfully!');
-    navigate('/');
+
+    if (!user) {
+      alert('You must be logged in to report an item.');
+      navigate('/login');
+      return;
+    }
+
+    if (!imageFile) {
+      alert('Please upload an image of the item.');
+      return;
+    }
+
+    setSubmitting(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('image', imageFile);
+      formData.append('name', itemName);
+      formData.append('category', category);
+      formData.append('location', location);
+      formData.append('description', description);
+
+      const token = localStorage.getItem('token');
+
+      const res = await fetch(`${API_URL}/api/items`, {
+        method: 'POST',
+        headers: {
+          Authorization: token ? `Bearer ${token}` : '',
+        },
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || 'Failed to submit report');
+      }
+
+      const data = await res.json();
+      alert('Report submitted successfully!');
+      // reset
+      setCategory('');
+      setItemName('');
+      setLocation('');
+      setDescription('');
+      setImageFile(null);
+      setSubmitting(false);
+      onClose();
+      navigate('/');
+    } catch (err) {
+      setSubmitting(false);
+      alert('Submission failed: ' + err.message);
+    }
   };
 
   return (
@@ -32,10 +98,12 @@ const ReportItemModel = ({ open, onClose }) => {
             Upload Image
           </label>
           <input
+            ref={fileInputRef}
             type="file"
             id="itemImage"
-            name="itemImage"
+            name="image"
             accept="image/*"
+            onChange={(e) => setImageFile(e.target.files[0])} 
             className="block w-full text-sm text-gray-900 border border-gray-300 rounded-md p-2 bg-gray-50 focus:outline-none"
             required
           />
@@ -51,6 +119,8 @@ const ReportItemModel = ({ open, onClose }) => {
               type="text"
               name="itemName"
               placeholder="Item Name"
+              value={itemName}                  
+              onChange={(e) => setItemName(e.target.value)} 
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-green-500 focus:border-green-500 text-sm"
               required
             />
@@ -72,6 +142,8 @@ const ReportItemModel = ({ open, onClose }) => {
               type="text"
               name="location"
               placeholder="Found Location"
+              value={location}               
+              onChange={(e) => setLocation(e.target.value)} 
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-green-500 focus:border-green-500 text-sm"
               required
             />
@@ -86,6 +158,8 @@ const ReportItemModel = ({ open, onClose }) => {
             id="description"
             name="description"
             rows="4"
+             value={description}                 
+            onChange={(e) => setDescription(e.target.value)} 
             className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-green-500 focus:border-green-500 text-sm"
             required
           ></textarea>
@@ -97,14 +171,16 @@ const ReportItemModel = ({ open, onClose }) => {
             <input
               type="text"
               name="fullName"
-              placeholder="Full Name"
+              value={user?.name || ''}
+              readOnly
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-green-500 focus:border-green-500 text-sm"
               required
             />
             <input
               type="email"
               name="email"
-              placeholder="Email Address"
+              value={user?.email || ''}
+              readOnly
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-green-500 focus:border-green-500 text-sm"
               required
             />
@@ -123,6 +199,16 @@ const ReportItemModel = ({ open, onClose }) => {
           <div className="flex gap-3 w-full sm:w-auto justify-end">
             <button
               type="reset"
+              onClick={() => {
+                setCategory('');
+                setItemName('');
+                setLocation('');
+                setDescription('');
+                setImageFile(null);
+                if (fileInputRef.current) {
+                  fileInputRef.current.value = '';
+                }
+              }}
               className="px-4 py-2 bg-gray-300 text-gray-800 font-semibold rounded-lg hover:bg-gray-400 transition"
             >
               Reset
@@ -131,7 +217,7 @@ const ReportItemModel = ({ open, onClose }) => {
               type="submit"
               className="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition"
             >
-              Submit
+              {submitting ? 'Submitting...' : 'Submit'}
             </button>
           </div>
         </div>
