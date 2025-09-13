@@ -45,13 +45,13 @@ const Navbar = () => {
                   to={link.path}
                   className={`relative px-3 py-2 text-sm font-medium transition-all duration-300 ease-in-out transform hover:scale-105 ${
                     location.pathname === link.path
-                      ? 'text-green-400'
-                      : 'text-white hover:text-green-400'
+                      ? 'text-[#3CB371]'
+                      : 'text-white hover:text-[#36a163]'
                   } group`}
                 >
                   {link.name}
                   {/* Animated underline */}
-                  <span className={`absolute bottom-0 left-0 w-full h-0.5 bg-green-400 transform transition-all duration-300 ease-in-out ${
+                  <span className={`absolute bottom-0 left-0 w-full h-0.5 bg-[#36a163] transform transition-all duration-300 ease-in-out ${
                     location.pathname === link.path 
                       ? 'scale-x-100' 
                       : 'scale-x-0 group-hover:scale-x-100'
@@ -116,13 +116,13 @@ const Navbar = () => {
               <div className="flex items-center space-x-3">
                 <button
                   onClick={() => navigate("/login?mode=login")}
-                  className="text-white hover:text-green-400 px-3 py-2 text-sm font-medium transition-all duration-300 ease-in-out transform hover:scale-105 relative group"
+                  className="text-white hover:text-[#36a163] px-3 py-2 text-sm font-medium transition-all duration-300 ease-in-out transform hover:scale-105 relative group"
                 >
                   Login
                 </button>
                 <button
                   onClick={() => navigate("/login?mode=register")}
-                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-3xl text-sm font-medium transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg"
+                  className="bg-[#3CB371]  hover:bg-[#36a163] text-white px-4 py-2 rounded-3xl text-sm font-medium transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg"
                 >
                   Sign Up
                 </button>
