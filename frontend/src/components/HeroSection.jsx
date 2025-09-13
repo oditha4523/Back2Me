@@ -96,13 +96,13 @@ const HeroSection = () => {
             >
               <Link 
                 to="/find"
-                className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 md:px-8 md:py-3 rounded-4xl text-sm md:text-lg font-small transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg text-center w-32 md:w-40"
+                className="bg-[#3CB371]  hover:bg-[#36a163] text-white px-6 py-3 md:px-8 md:py-3 rounded-4xl text-sm md:text-lg font-small transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg text-center w-32 md:w-40"
               >
                 Find Item
               </Link>
               <Link 
                 to="/report"
-                className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 md:px-8 md:py-3 rounded-4xl text-sm md:text-lg font-small transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg text-center w-32 md:w-40"
+                className="bg-[#3CB371]  hover:bg-[#36a163] text-white px-6 py-3 md:px-8 md:py-3 rounded-4xl text-sm md:text-lg font-small transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg text-center w-32 md:w-40"
               >
                 Report Item
               </Link>
