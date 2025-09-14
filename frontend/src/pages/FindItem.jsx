@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Navbar from '../components/navbar';
-import GoogleMapsWrapper from '../components/GoogleMapsWrapper';
+import LeafletMap from '../components/LeafletMap';
 import { FaSearch } from "react-icons/fa";
 
 const FindItem = () => {
@@ -51,7 +51,7 @@ const FindItem = () => {
               <h2 className="text-xl font-semibold">Found Items Map</h2>
             </div>
             <div className="row-span-8">
-              <GoogleMapsWrapper />
+              <LeafletMap />
             </div>
           </div>
 
