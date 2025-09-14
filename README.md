@@ -24,7 +24,6 @@ Coming soon...
 - ✅ **Claim Verification** through item-specific security questions
 - 🧾 **QR Code Identification** printed and attached to personal belongings
 - 🧑‍🤝‍🧑 **Anonymous Communication** until item verification is complete
-- 🎖️ **Reward System** for users who return items and help others
 - 🔐 **User Authentication** with role-based access
 - 📦 **Claimed Items Archive** showing past recovery history
 
@@ -35,11 +34,11 @@ Coming soon...
 | Layer         | Technology                          |
 |---------------|-------------------------------------|
 | Frontend      | React.js, Tailwind CSS              |
-| Backend       | Node.js / Express or Firebase (TBD) |
-| Database      | MongoDB / Supabase (TBD)            |
-| Maps & Geo    | Google Maps API / Leaflet.js        |
-| QR Code       | `qrcode.react` or similar libraries |
-| Authentication| Firebase Auth / Supabase Auth       |
+| Backend       | Node.js                             |
+| Database      | MongoDB                             |
+| Maps & Geo    | Google Maps API / Leaflet.js (TBD)  |
+| QR Code       | `qrcode.react` (TBD)                |
+| Authentication| Firebase Auth / Supabase Auth (TBD) |
 
 ---
 

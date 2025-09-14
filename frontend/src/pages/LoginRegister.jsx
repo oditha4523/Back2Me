@@ -1,11 +1,25 @@
 
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate  } from "react-router-dom";
+import axios from "axios";
 import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
 
 export default function LoginRegister() {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [active, setActive] = useState(false);
+
+  // States for login
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+
+  // States for register
+  const [regName, setRegName] = useState("");
+  const [regEmail, setRegEmail] = useState("");
+  const [regPassword, setRegPassword] = useState("");
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
 
@@ -13,22 +27,72 @@ export default function LoginRegister() {
     setActive(mode === "register");
   }, [searchParams]);
 
+  // Handle Login
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/login", {
+        email: loginEmail,
+        password: loginPassword,
+      });
+
+      localStorage.setItem("token", res.data.token); // save token
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
+      navigate("/"); 
+    } catch (err) {
+      setError(err.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Handle Register
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/register", {
+        name: regName,
+        email: regEmail,
+        password: regPassword,
+      });
+
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
+      navigate("/profile");
+    } catch (err) {
+      setError(err.response?.data?.message || "Registration failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-green-100 via-green-50 to-white">
       <div className="relative w-[850px] max-w-[95%] h-[550px] bg-white rounded-3xl shadow-lg overflow-hidden">
         {/* Login Form */}
         <div className={`absolute top-0 w-1/2 h-full p-10 flex items-center text-center transition-all duration-700 ease-in-out
           ${active ? 'translate-x-[-100%] opacity-0' : 'right-0 opacity-100'}`}>
-          <form className="w-full space-y-6">
+          <form className="w-full space-y-6" onSubmit={handleLogin}>
             <h1 className="text-4xl font-bold mb-4 text-green-600 tracking-tight">Sign In</h1>
             <p className="text-gray-600 text-sm mb-6">
               Welcome back to Back2Me
             </p>
+            {error && <p className="text-red-500">{error}</p>}
             
             <div className="relative">
               <input 
-                type="text" 
-                placeholder="Username" 
+                type="email" 
+                placeholder="Email" 
+                onChange={(e) => setLoginEmail(e.target.value)}
                 className="w-full py-3.5 px-12 bg-green-50/50 rounded-xl text-gray-700 text-sm font-medium
                 border border-green-100 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-200
                 transition-all duration-200" 
@@ -40,6 +104,8 @@ export default function LoginRegister() {
               <input 
                 type="password" 
                 placeholder="Password" 
+                value={loginPassword}
+                onChange={(e) => setLoginPassword(e.target.value)}
                 className="w-full py-3.5 px-12 bg-green-50/50 rounded-xl text-gray-700 text-sm font-medium
                 border border-green-100 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-200
                 transition-all duration-200" 
@@ -56,9 +122,9 @@ export default function LoginRegister() {
               <a href="#" className="text-green-600 hover:text-green-700 transition-colors">Forgot Password?</a>
             </div>
 
-            <button className="w-full py-3.5 rounded-xl bg-green-500 text-white font-semibold text-sm
+            <button disabled={loading} className="w-full py-3.5 rounded-xl bg-green-500 text-white font-semibold text-sm
               hover:bg-green-600 active:scale-[0.99] transition-all duration-200 shadow-lg shadow-green-200">
-              Log in
+              {loading ? "Logging in..." : "Log in"}
             </button>
           </form>
         </div>
@@ -66,16 +132,19 @@ export default function LoginRegister() {
         {/* Register Form */}
         <div className={`absolute top-0 w-1/2 h-full p-10 flex items-center text-center transition-all duration-700 ease-in-out
           ${active ? 'left-0 opacity-100 visible' : 'right-[-50%] opacity-0 invisible'}`}>
-          <form className="w-full space-y-6">
+          <form className="w-full space-y-6" onSubmit={handleRegister}>
             <h1 className="text-4xl font-bold mb-4 text-green-600 tracking-tight">Sign Up</h1>
             <p className="text-gray-600 text-sm mb-6">
               Join our lost and found community
             </p>
+            {error && <p className="text-red-500">{error}</p>}
 
             <div className="relative">
               <input 
                 type="text" 
                 placeholder="Username" 
+                value={regName}
+                onChange={(e) => setRegName(e.target.value)}
                 className="w-full py-3.5 px-12 bg-green-50/50 rounded-xl text-gray-700 text-sm font-medium
                 border border-green-100 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-200
                 transition-all duration-200" 
@@ -87,6 +156,8 @@ export default function LoginRegister() {
               <input 
                 type="email" 
                 placeholder="Email" 
+                value={regEmail}
+                onChange={(e) => setRegEmail(e.target.value)}
                 className="w-full py-3.5 px-12 bg-green-50/50 rounded-xl text-gray-700 text-sm font-medium
                 border border-green-100 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-200
                 transition-all duration-200" 
@@ -98,6 +169,8 @@ export default function LoginRegister() {
               <input 
                 type="password" 
                 placeholder="Password" 
+                value={regPassword}
+                onChange={(e) => setRegPassword(e.target.value)}
                 className="w-full py-3.5 px-12 bg-green-50/50 rounded-xl text-gray-700 text-sm font-medium
                 border border-green-100 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-200
                 transition-all duration-200" 
@@ -105,9 +178,9 @@ export default function LoginRegister() {
               <FaLock className="absolute right-4 top-1/2 -translate-y-1/2 text-green-400 text-lg" />
             </div>
 
-            <button className="w-full py-3.5 rounded-xl bg-green-500 text-white font-semibold text-sm
+            <button disabled={loading} className="w-full py-3.5 rounded-xl bg-green-500 text-white font-semibold text-sm
               hover:bg-green-600 active:scale-[0.99] transition-all duration-200 shadow-lg shadow-green-200">
-              Register
+              {loading ? "Registering..." : "Register"}
             </button>
           </form>
         </div>
