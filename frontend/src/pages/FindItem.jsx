@@ -155,6 +155,37 @@ const FindItem = () => {
     return null;
   };
 
+  // Function to convert coordinates to location name
+  const getLocationName = (item) => {
+    const coordinates = getItemCoordinates(item);
+    if (!coordinates) return item.location || 'Unknown Location';
+    
+    // If location is already a readable name (not coordinates), return it
+    if (item.location && typeof item.location === 'string' && !item.location.includes(',')) {
+      return item.location;
+    }
+    
+    // Map coordinates to location names (you can expand this based on your campus/area)
+    const locationMap = {
+      '7.1190247, 79.9159876': 'Main Campus Building',
+      '7.1195, 79.9165': 'Library',
+      '7.1185, 79.9155': 'Cafeteria',
+      '7.1200, 79.9170': 'Parking Lot A',
+      '14.5995, 120.9842': 'Manila Campus - Main Building',
+      '14.6010, 120.9850': 'Manila Campus - Cafeteria',
+      '14.5980, 120.9860': 'Manila Campus - Parking'
+    };
+    
+    // Try to match exact coordinates
+    const coordString = `${coordinates[0]}, ${coordinates[1]}`;
+    if (locationMap[coordString]) {
+      return locationMap[coordString];
+    }
+    
+    // If no exact match, return a generic location based on coordinates
+    return `Location (${coordinates[0].toFixed(4)}, ${coordinates[1].toFixed(4)})`;
+  };
+
   // Filter items based on category
   const filteredItems = foundItemCategory 
     ? foundItems.filter(item => item.category === foundItemCategory)
@@ -206,30 +237,94 @@ const FindItem = () => {
                 <option value="others">Others</option>
               </select>
             </div>
-            <div className="row-span-2 bg-white rounded-3xl p-4 overflow-auto border border-gray-200">
-              <h2 className="text-xl font-semibold mb-2">Found Items</h2>
+            <div className="row-span-2 bg-white rounded-3xl p-4 overflow-auto border border-gray-200 shadow-sm">
+              <h2 className="text-xl font-semibold mb-4 text-gray-800">Found Items</h2>
               {loading ? (
-                <p className="text-gray-500">Loading found items...</p>
+                <div className="flex items-center justify-center h-32">
+                  <div className="text-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
+                    <p className="text-gray-500">Loading found items...</p>
+                  </div>
+                </div>
               ) : error ? (
-                <p className="text-red-500">Error: {error}</p>
+                <div className="text-center p-8">
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                    <p className="text-red-600 text-sm">{error}</p>
+                  </div>
+                </div>
               ) : filteredItems.length > 0 ? (
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {filteredItems.map(item => (
                     <div 
                       key={item._id} 
-                      className={`p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors ${
-                        selectedItem?._id === item._id ? 'bg-blue-50 border-blue-300' : ''
+                      className={`group p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:shadow-md ${
+                        selectedItem?._id === item._id 
+                          ? 'bg-blue-50 border-blue-300 shadow-md' 
+                          : 'bg-white border-gray-200 hover:border-gray-300'
                       }`}
                       onClick={() => handleItemClick(item)}
                     >
-                      <h3 className="font-medium">{item.name}</h3>
-                      <p className="text-sm text-gray-600">{item.location}</p>
-                      <p className="text-xs text-gray-500">{item.description}</p>
+                      <div className="flex gap-4">
+                        {/* Item Image */}
+                        <div className="flex-shrink-0">
+                          <div className="relative">
+                            {item.imageUrl ? (
+                              <img
+                                src={`http://localhost:5000${item.imageUrl}`}
+                                alt={item.name}
+                                className="w-20 h-20 object-cover rounded-lg border-2 border-gray-100 shadow-sm"
+                                onError={(e) => {
+                                  e.target.style.display = 'none';
+                                  e.target.nextSibling.style.display = 'flex';
+                                }}
+                              />
+                            ) : null}
+                            <div 
+                              className="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg border-2 border-gray-100 flex items-center justify-center text-gray-400 text-xs font-medium shadow-sm"
+                              style={{ display: item.imageUrl ? 'none' : 'flex' }}
+                            >
+                              📷
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Item Details */}
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors">
+                            {item.name}
+                          </h3>
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="text-sm text-gray-600">📍</span>
+                            <p className="text-sm text-gray-600 truncate">{getLocationName(item)}</p>
+                          </div>
+                          <p className="text-xs text-gray-500 mb-3 line-clamp-2 leading-relaxed">
+                            {item.description}
+                          </p>
+                          
+                          {/* Tags */}
+                          <div className="flex flex-wrap gap-2">
+                            {item.category && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                {item.category}
+                              </span>
+                            )}
+                            {item.reporter && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                👤 {item.reporter.name}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p>No found items to display.</p>
+                <div className="text-center p-12">
+                  <div className="text-gray-400 text-6xl mb-4">🔍</div>
+                  <p className="text-gray-500 text-lg font-medium mb-2">No items found</p>
+                  <p className="text-gray-400 text-sm">Try adjusting your search criteria</p>
+                </div>
               )}
             </div>
           </div>
@@ -260,14 +355,63 @@ const FindItem = () => {
                     console.log(`Item ${item.name} coordinates:`, coordinates); // Debug log
                     return coordinates ? (
                       <Marker key={item._id} position={coordinates}>
-                        <Popup>
-                          <div className="p-2">
-                            <h3 className="font-semibold">{item.name}</h3>
-                            <p className="text-sm text-gray-600">{item.location}</p>
-                            <p className="text-xs text-gray-500 mt-1">{item.description}</p>
-                            <span className="inline-block mt-2 px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded">
-                              {item.category}
-                            </span>
+                        <Popup maxWidth={320} minWidth={280} className="custom-popup">
+                          <div className="bg-white rounded-lg overflow-hidden">
+                            {/* Popup Image */}
+                            {item.imageUrl && (
+                              <div className="relative">
+                                <img
+                                  src={`http://localhost:5000${item.imageUrl}`}
+                                  alt={item.name}
+                                  className="w-full h-40 object-cover"
+                                  onError={(e) => {
+                                    e.target.style.display = 'none';
+                                  }}
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                              </div>
+                            )}
+                            
+                            {/* Popup Content */}
+                            <div className="p-4 tracking-normal">
+                              <h3 className="font-bold text-lg mb-1 text-gray-900 tracking-tight">{item.name}</h3>
+                              
+                              <div className="flex items-center gap-2 mb-3">
+                                <span className="text-blue-500">📍</span>
+                                <p className="text-sm text-gray-600 font-medium tracking-normal">{getLocationName(item)}</p>
+                              </div>
+                              
+                              <p className="text-sm text-gray-700 mb-4 leading-relaxed tracking-normal">
+                                {item.description}
+                              </p>
+                              
+                              {/* Tags */}
+                              <div className="flex flex-wrap gap-2 mb-3">
+                                {item.category && (
+                                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 tracking-normal">
+                                    {item.category}
+                                  </span>
+                                )}
+                                {item.reporter && (
+                                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 tracking-normal">
+                                    👤 {item.reporter.name}
+                                  </span>
+                                )}
+                              </div>
+                              
+                              {/* Date */}
+                              {item.createdAt && (
+                                <div className="pt-3 border-t border-gray-100">
+                                  <p className="text-xs text-gray-500 flex items-center gap-1 tracking-normal">
+                                    🕒 Found on {new Date(item.createdAt).toLocaleDateString('en-US', {
+                                      year: 'numeric',
+                                      month: 'short',
+                                      day: 'numeric'
+                                    })}
+                                  </p>
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </Popup>
                       </Marker>
