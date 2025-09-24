@@ -47,13 +47,13 @@ const ClaimItem = () => {
                     )}
 
                     {/* Claim via Email */}
-{item.claimMethod === 'email' && (
-  <div className="space-y-3 bg-green-50 p-4 rounded-xl shadow-inner">
-    <p className="font-semibold text-gray-700">Contact via email:</p>
+                    {item.claimMethod === 'email' && (
+                        <div className="space-y-3 bg-green-50 p-4 rounded-xl shadow-inner">
+                            <p className="font-semibold text-gray-700">Contact via email:</p>
 
-    {(() => {
-      const subject = `Claiming ${item.name}`;
-      const body = `Hello,
+                            {(() => {
+                                const subject = `Claiming ${item.name}`;
+                                const body = `Hello,
 
 I believe this item belongs to me. Here are my details:
 
@@ -67,42 +67,41 @@ Please verify my claim.
 
 Thank you!`;
 
-      const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${
-        item.verifyInfo
-      }&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                                const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${item.verifyInfo
+                                    }&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-      const mailtoLink = `mailto:${item.verifyInfo}?subject=${encodeURIComponent(
-        subject
-      )}&body=${encodeURIComponent(body)}`;
+                                const mailtoLink = `mailto:${item.verifyInfo}?subject=${encodeURIComponent(
+                                    subject
+                                )}&body=${encodeURIComponent(body)}`;
 
-      return (
-        <div className="space-y-2">
-          {/* Gmail button */}
-          <a
-            href={gmailLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block px-4 py-3 bg-green-600 text-white rounded-full text-center font-semibold hover:bg-green-500 transition"
-          >
-            📧 Send Email via Gmail
-          </a>
+                                return (
+                                    <div className="space-y-2">
+                                        {/* Gmail button */}
+                                        <a
+                                            href={gmailLink}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="block px-4 py-3 bg-green-600 text-white rounded-full text-center font-semibold hover:bg-green-500 transition"
+                                        >
+                                            📧 Send Email via Gmail
+                                        </a>
 
-          {/* Mailto fallback */}
-          <a
-            href={mailtoLink}
-            className="block px-4 py-3 bg-gray-200 text-gray-700 rounded-full text-center font-semibold hover:bg-gray-300 transition"
-          >
-            ✉️ Send with Default Mail App
-          </a>
-        </div>
-      );
-    })()}
+                                        {/* Mailto fallback */}
+                                        <a
+                                            href={mailtoLink}
+                                            className="block px-4 py-3 bg-gray-200 text-gray-700 rounded-full text-center font-semibold hover:bg-gray-300 transition"
+                                        >
+                                            ✉️ Send with Default Mail App
+                                        </a>
+                                    </div>
+                                );
+                            })()}
 
-    <p className="text-sm text-gray-500 mt-1">
-      Choose Gmail (opens in a new tab) or use your system’s default mail app.
-    </p>
-  </div>
-)}
+                            <p className="text-sm text-gray-500 mt-1">
+                                Choose Gmail (opens in a new tab) or use your system’s default mail app.
+                            </p>
+                        </div>
+                    )}
 
 
 
@@ -118,9 +117,37 @@ Thank you!`;
                                 placeholder="Your answer..."
                                 className="w-full border border-gray-300 rounded-full p-3 focus:outline-none focus:ring-2 focus:ring-green-400"
                             />
-                            <button className="w-full px-4 py-3 bg-green-600 text-white rounded-full font-semibold hover:bg-green-500 transition">
+                            <button
+                                onClick={async () => {
+                                    if (!answer.trim()) {
+                                        alert('Please enter an answer!');
+                                        return;
+                                    }
+
+                                    try {
+                                        const response = await fetch('http://localhost:5000/api/claims/submit-answer', {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify({ itemId: item._id, answer })
+                                        });
+
+                                        const data = await response.json();
+                                        if (data.success) {
+                                            alert('Your answer has been submitted to the reporter!');
+                                            setAnswer('');
+                                        } else {
+                                            alert('Failed to send answer. Try again.');
+                                        }
+                                    } catch (err) {
+                                        console.error(err);
+                                        alert('Something went wrong!');
+                                    }
+                                }}
+                                className="w-full px-4 py-3 bg-green-600 text-white rounded-full font-semibold hover:bg-green-500 transition"
+                            >
                                 Submit Answer
                             </button>
+
                         </div>
                     )}
 

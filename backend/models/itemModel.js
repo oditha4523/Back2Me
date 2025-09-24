@@ -26,6 +26,7 @@ const itemSchema = new mongoose.Schema(
       id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
       name: { type: String },
       email: { type: String },
+      phone: { type: String },
     },
     isClaimed: {
       type: Boolean,
@@ -37,7 +38,7 @@ const itemSchema = new mongoose.Schema(
     },
     claimMethod: {
       type: String,
-      enum: ['phone', 'email', 'question'],
+      enum: ['call', 'email', 'verification'],
       required: true,
     },
     verifyInfo: {

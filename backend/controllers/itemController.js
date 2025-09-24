@@ -34,6 +34,7 @@ const addItem = async (req, res) => {
         id: req.user._id,
         name: req.user.name,
         email: req.user.email,
+        phone: req.user.phone,
       },
       claimMethod,
       verifyInfo
