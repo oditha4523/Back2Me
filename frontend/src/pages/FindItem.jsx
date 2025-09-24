@@ -274,8 +274,7 @@ const FindItem = () => {
                   <option value="others">Others</option>
                 </select>
               </div>
-              <div className="bg-white rounded-2xl p-5 shadow border border-gray-100 flex-1 overflow-auto">
-                <h2 className="text-lg font-semibold text-gray-800 mb-4">Found Items</h2>
+              <div>
                 {loading ? (
                   <div className="flex items-center justify-center h-32">
                     <div className="text-center">
@@ -290,71 +289,40 @@ const FindItem = () => {
                     </div>
                   </div>
                 ) : filteredItems.length > 0 ? (
-                  <div className="space-y-3">
-                    {filteredItems.map(item => (
-                      <div
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {filteredItems.map((item, index) => (
+                      <li
                         key={item._id}
-                        className={`p-4 border rounded-xl cursor-pointer transition hover:shadow-md ${selectedItem?._id === item._id
-                          ? 'bg-green-50 border-green-400'
-                          : 'bg-white border-gray-200 hover:border-gray-300'
-                          }`}
                         onClick={() => handleItemClick(item)}
+                        className={`flex flex-col cursor-pointer rounded-xl overflow-hidden shadow hover:shadow-lg transform hover:-translate-y-1 transition bg-white relative animate-fadeUp`}
+                        style={{ animationDelay: `${index * 0.05}s` }} // stagger animation for each card
                       >
-                        <div className="flex gap-4">
-                          {/* Item Image */}
-                          <div className="flex-shrink-0">
-                            <div className="relative">
-                              {item.imageUrl ? (
-                                <img
-                                  src={`http://localhost:5000${item.imageUrl}`}
-                                  alt={item.name}
-                                  className="w-20 h-20 object-cover rounded-lg border-2 border-gray-100 shadow-sm"
-                                  onError={(e) => {
-                                    e.target.style.display = 'none';
-                                    e.target.nextSibling.style.display = 'flex';
-                                  }}
-                                />
-                              ) : null}
-                              <div
-                                className="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg border-2 border-gray-100 flex items-center justify-center text-gray-400 text-xs font-medium shadow-sm"
-                                style={{ display: item.imageUrl ? 'none' : 'flex' }}
-                              >
-                                📷
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Item Details */}
-                          <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors">
-                              {item.name}
-                            </h3>
-                            <div className="flex items-center gap-2 mb-2">
-                              <span className="text-sm text-gray-600">📍</span>
-                              <p className="text-sm text-gray-600 truncate">{getLocationName(item)}</p>
-                            </div>
-                            <p className="text-xs text-gray-500 mb-3 line-clamp-2 leading-relaxed">
-                              {item.description}
-                            </p>
-
-                            {/* Tags */}
-                            <div className="flex flex-wrap gap-2">
-                              {item.category && (
-                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                  {item.category}
-                                </span>
-                              )}
-                              {item.reporter && (
-                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                  👤 {item.reporter.name}
-                                </span>
-                              )}
-                            </div>
+                        {/* Image with location overlay */}
+                        <div className="relative w-full h-36">
+                          {item.imageUrl ? (
+                            <img
+                              src={`http://localhost:5000${item.imageUrl}`}
+                              alt={item.name}
+                              className="w-full h-full object-cover"
+                              onError={(e) => { e.target.style.display = 'none'; }}
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400 text-3xl">📷</div>
+                          )}
+                          {/* Location overlay */}
+                          <div className="absolute bottom-0 left-0 w-full bg-black/40 text-white text-xs px-2 py-1 truncate">
+                            📍 {getLocationName(item)}
                           </div>
                         </div>
-                      </div>
+
+                        {/* Name */}
+                        <div className="p-3 text-center">
+                          <h3 className="text-sm font-semibold text-gray-900 truncate">{item.name}</h3>
+                        </div>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
+
                 ) : (
                   <div className="text-center p-12">
                     <div className="text-gray-400 text-6xl mb-4">🔍</div>
@@ -363,10 +331,28 @@ const FindItem = () => {
                   </div>
                 )}
               </div>
+
+              <style jsx="true">{`
+                @keyframes fadeUp {
+                  0% {
+                    opacity: 0;
+                    transform: translateY(10px);
+                  }
+                  100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                  }
+                }
+
+                .animate-fadeUp {
+                  animation: fadeUp 0.4s ease-out forwards;
+                }
+              `}</style>
+
             </div>
 
             <div className="col-span-2 flex flex-col bg-white rounded-2xl shadow border border-gray-100 overflow-hidden">
-              <div className="flex justify-between items-center p-4 border-b">
+              <div className="flex justify-between items-center p-4 border-b border-gray-400">
                 <h2 className="text-lg font-semibold text-gray-800">Map View</h2>
                 <button
                   onClick={handleResetView}
@@ -375,7 +361,7 @@ const FindItem = () => {
                   🔄 Reset View
                 </button>
               </div>
-              <div className="flex-1 min-h-[400px]">
+              <div className="flex-1 min-h-[525px]">
                 {loading ? (
                   <div className="flex items-center justify-center h-full">
                     <p className="text-gray-500">Loading map...</p>
@@ -397,45 +383,49 @@ const FindItem = () => {
                       const coordinates = getItemCoordinates(item);
                       return coordinates ? (
                         <Marker key={item._id} position={coordinates}>
-                          <Popup maxWidth={320} minWidth={280} className="custom-popup">
-                            <div className="bg-white rounded-lg overflow-hidden">
-                              {/* Popup Image */}
-                              {item.imageUrl && (
-                                <div className="relative">
+                          <Popup maxWidth={340} minWidth={260} className="!p-0 !bg-transparent">
+                            <div className="bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden w-full transform transition duration-300 ease-out hover:scale-105 animate-popupFadeIn">
+
+                              {/* Image */}
+                              {item.imageUrl ? (
+                                <div className="relative w-full h-44">
                                   <img
                                     src={`http://localhost:5000${item.imageUrl}`}
                                     alt={item.name}
-                                    className="w-full h-40 object-cover"
-                                    onError={(e) => {
-                                      e.target.style.display = 'none';
-                                    }}
+                                    className="w-full h-full object-cover"
+                                    onError={(e) => { e.target.style.display = 'none'; }}
                                   />
-                                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                                </div>
+                              ) : (
+                                <div className="w-full h-44 bg-gray-100 flex items-center justify-center text-gray-400 text-2xl">
+                                  📷
                                 </div>
                               )}
 
-                              {/* Popup Content */}
-                              <div className="p-4 tracking-normal">
-                                <h3 className="font-bold text-lg mb-1 text-gray-900 tracking-tight">{item.name}</h3>
+                              {/* Content */}
+                              <div className="p-4 space-y-2">
+                                {/* Item Name */}
+                                <h3 className="text-lg font-bold text-gray-900 truncate">{item.name}</h3>
 
-                                <div className="flex items-center gap-2 mb-3">
+                                {/* Location */}
+                                <div className="flex items-center gap-2 text-gray-600 text-sm truncate">
                                   <span className="text-blue-500">📍</span>
-                                  <p className="text-sm text-gray-600 font-medium tracking-normal">{getLocationName(item)}</p>
+                                  <p>{getLocationName(item)}</p>
                                 </div>
 
-                                <p className="text-sm text-gray-700 mb-4 leading-relaxed tracking-normal">
-                                  {item.description}
-                                </p>
+                                {/* Description */}
+                                <p className="text-gray-700 text-sm leading-relaxed line-clamp-3">{item.description}</p>
 
                                 {/* Tags */}
-                                <div className="flex flex-wrap gap-2 mb-3">
+                                <div className="flex flex-wrap gap-2">
                                   {item.category && (
-                                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 tracking-normal">
+                                    <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
                                       {item.category}
                                     </span>
                                   )}
                                   {item.reporter && (
-                                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 tracking-normal">
+                                    <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
                                       👤 {item.reporter.name}
                                     </span>
                                   )}
@@ -443,8 +433,8 @@ const FindItem = () => {
 
                                 {/* Date */}
                                 {item.createdAt && (
-                                  <div className="pt-3 border-t border-gray-100">
-                                    <p className="text-xs text-gray-500 flex items-center gap-1 tracking-normal">
+                                  <div className="pt-2 border-t border-gray-100">
+                                    <p className="text-gray-500 text-xs flex items-center gap-1">
                                       🕒 Found on {new Date(item.createdAt).toLocaleDateString('en-US', {
                                         year: 'numeric',
                                         month: 'short',
@@ -455,7 +445,26 @@ const FindItem = () => {
                                 )}
                               </div>
                             </div>
+
+                            {/* Animation Styles */}
+                            <style jsx="true">{`
+                              @keyframes popupFadeIn {
+                                0% {
+                                  opacity: 0;
+                                  transform: translateY(-10px);
+                                }
+                                100% {
+                                  opacity: 1;
+                                  transform: translateY(0);
+                                }
+                              }
+                              .animate-popupFadeIn {
+                                animation: popupFadeIn 0.3s ease-out forwards;
+                              }
+                            `}</style>
                           </Popup>
+
+
                         </Marker>
                       ) : null;
                     })}
