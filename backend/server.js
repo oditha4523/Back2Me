@@ -1,15 +1,11 @@
+require('dotenv').config();
+
 // 1. Import required packages
 const express = require('express');
 const cors = require('cors');
-const dotenv = require('dotenv');
 const path = require('path');
 const claimRoutes = require('./routes/claimRoutes');
 
-
-
-
-// 2. Load environment variables from .env
-dotenv.config();
 // 3. Import database connection function
 const connectDB = require('./config/db');
 // 4. Import routes
@@ -55,3 +51,5 @@ app.listen(PORT, () => {
 //QRCode routes
 const qrRoutes = require('./routes/qrRoutes');
 app.use('/api/qr', qrRoutes);
+
+

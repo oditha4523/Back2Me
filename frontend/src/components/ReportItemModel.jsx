@@ -37,6 +37,8 @@ const ReportItemModel = ({ open, onClose }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [mapCenter, setMapCenter] = useState([51.505, -0.09]);
+  const [claimMethod, setClaimMethod] = useState('');
+  const [verifyInfo, setVerifyInfo] = useState('');
 
   const fileInputRef = useRef(null);
 
@@ -75,6 +77,8 @@ const ReportItemModel = ({ open, onClose }) => {
       formData.append('category', category);
       formData.append('location', `${selectedLocation.lat}, ${selectedLocation.lng}`);
       formData.append('description', description);
+      formData.append('claimMethod', claimMethod);
+      formData.append('verifyInfo', verifyInfo);
 
       const token = localStorage.getItem('token');
 
@@ -106,6 +110,8 @@ const ReportItemModel = ({ open, onClose }) => {
       setShowMap(false);
       setDescription('');
       setImageFile(null);
+      setClaimMethod('');
+      setVerifyInfo('');
       setSubmitting(false);
       onClose();
       navigate('/');
@@ -328,6 +334,69 @@ const ReportItemModel = ({ open, onClose }) => {
           </div>
         </div>
 
+        <div>
+          <h3 className="text-lg font-semibold text-gray-700 mb-3">Preferred Claim Method</h3>
+          <select
+            name="claimMethod"
+            value={claimMethod}
+            onChange={(e) => setClaimMethod(e.target.value)}
+            className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-green-500 focus:border-green-500 text-sm w-full"
+            required
+          >
+            <option value="">Select a Claim Method</option>
+            <option value="call">📞 Contact by Phone Call</option>
+            <option value="email">📧 Contact by Email</option>
+            <option value="verification">❓ Answer Verification Question</option>
+          </select>
+        </div>
+
+        {claimMethod === "call" && (
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Enter your phone number
+          </label>
+          <input
+            type="tel"
+            placeholder="Ex: +94 712 345 678"
+            value={verifyInfo}
+            onChange={(e) => setVerifyInfo(e.target.value)}
+            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-green-500 focus:border-green-500 text-sm"
+            required
+          />
+        </div>
+      )}
+
+      {claimMethod === "email" && (
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Enter your email
+          </label>
+          <input
+            type="email"
+            placeholder="Ex: example@email.com"
+            value={verifyInfo}
+            onChange={(e) => setVerifyInfo(e.target.value)}
+            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-green-500 focus:border-green-500 text-sm"
+            required
+          />
+        </div>
+      )}
+
+      {claimMethod === "verification" && (
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            What is the verification question
+          </label>
+          <input
+            type="text"
+            placeholder="Type your answer here..."
+            value={verifyInfo}
+            onChange={(e) => setVerifyInfo(e.target.value)}
+            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-green-500 focus:border-green-500 text-sm"
+            required
+          />
+        </div>
+      )}
 
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4">
           <button
@@ -353,6 +422,7 @@ const ReportItemModel = ({ open, onClose }) => {
                 if (fileInputRef.current) {
                   fileInputRef.current.value = '';
                 }
+                setClaimMethod('');
               }}
               className="px-4 py-2 bg-gray-300 text-gray-800 font-semibold rounded-lg hover:bg-gray-400 transition"
             >
