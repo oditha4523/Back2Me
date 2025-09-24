@@ -9,6 +9,7 @@
     "mongoose": "^8.18.1",
     "multer": "^2.0.2",
     "qrcode": "^1.5.4",
-    "react-leaflet": "^5.0.0"
+    "react-leaflet": "^5.0.0",
+    "twilio": "^5.9.0"
   }
 }

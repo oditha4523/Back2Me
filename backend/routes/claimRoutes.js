@@ -12,3 +12,5 @@ router.post('/', authMiddleware, upload.single('proofImage'), createClaim);
 router.get('/:itemId', authMiddleware, getClaimsForItem);
 
 module.exports = router;
+
+

@@ -16,9 +16,9 @@ const addItem = async (req, res) => {
     // If protect middleware is used, req.user will exist
     if (!req.user) return res.status(401).json({ message: 'Not authorized' });
 
-    const { name, description, location, category } = req.body;
+    const { name, description, location, category, claimMethod, verifyInfo } = req.body;
 
-    if (!name || !description || !location || !category) {
+    if (!name || !description || !location || !category || !claimMethod || !verifyInfo) {
       return res.status(400).json({ message: 'Please fill all fields' });
     }
 
@@ -35,6 +35,8 @@ const addItem = async (req, res) => {
         name: req.user.name,
         email: req.user.email,
       },
+      claimMethod,
+      verifyInfo
     });
 
     const savedItem = await newItem.save();

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -67,6 +68,9 @@ const FindItem = () => {
   const [resetView, setResetView] = useState(false);
   // Track last reset to force effect
   const [lastReset, setLastReset] = useState(Date.now());
+  const [claimingItem, setClaimingItem] = useState(null);
+
+  const navigate = useNavigate();
 
   // Fetch found items from database
   useEffect(() => {
@@ -443,6 +447,12 @@ const FindItem = () => {
                                     </p>
                                   </div>
                                 )}
+
+                                <button 
+                                  onClick={() => navigate('/claimItem', { state: { item } })}  
+                                  className="mt-4 px-4 py-2 bg-green-600 hover:bg-green-500 text-white rounded-md cursor-pointer w-full text-center font-semibold shadow transition">
+                                  Claim item
+                                </button>
                               </div>
                             </div>
 

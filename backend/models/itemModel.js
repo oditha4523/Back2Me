@@ -35,6 +35,15 @@ const itemSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    claimMethod: {
+      type: String,
+      enum: ['phone', 'email', 'question'],
+      required: true,
+    },
+    verifyInfo: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true, // auto-creates `createdAt` and `updatedAt`
