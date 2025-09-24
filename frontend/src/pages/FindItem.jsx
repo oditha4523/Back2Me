@@ -205,29 +205,30 @@ const FindItem = () => {
 
   return (
     <>
-      <Navbar />
+    <div className="flex flex-col min-h-screen bg-gray-50">
+      <Navbar className="relative z-50" />
 
-      <div className="w-full h-[calc(100vh-64px)] p-4">
-        <div className="grid grid-cols-3 gap-4 h-full">
+      <main className="flex-grow p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
 
-          <div className="col-span-1 grid grid-rows-3 gap-4 h-full">
-            <div className="row-span-1 bg-white rounded-3xl p-4 flex flex-col gap-4 border border-gray-200">
-              <h2 className="text-xl font-semibold">Search Found Items</h2>
-              <div className="relative">
+          <div className="col-span-1 flex flex-col gap-6 w-full">
+            <div className="bg-white rounded-2xl p-5 shadow border border-gray-100">
+              <h2 className="text-lg font-semibold text-gray-800 mb-3">Search Found Items</h2>
+              <div className="relative mb-3">
                 <input
                   type="search"
                   id="search-box"
                   name="searchItem"
                   placeholder="Search by name, location..."
-                  className="w-full border border-gray-300 rounded-md p-2 pl-10 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                  className="w-full border border-gray-300 rounded-lg p-2 pl-10 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
-                <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-400" />
+                <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               </div>
               <select
                 name="foundItemCategory"
                 value={foundItemCategory}
                 onChange={(e) => setFoundItemCategory(e.target.value)}
-                className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-green-700 focus:border-green-700 text-sm "
+                className="w-full border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
               >
                 <option value="">All Categories</option>
                 <option value="electronics">Electronics</option>
@@ -237,8 +238,8 @@ const FindItem = () => {
                 <option value="others">Others</option>
               </select>
             </div>
-            <div className="row-span-2 bg-white rounded-3xl p-4 overflow-auto border border-gray-200 shadow-sm">
-              <h2 className="text-xl font-semibold mb-4 text-gray-800">Found Items</h2>
+            <div className="bg-white rounded-2xl p-5 shadow border border-gray-100 flex-1 overflow-auto">
+              <h2 className="text-lg font-semibold text-gray-800 mb-4">Found Items</h2>
               {loading ? (
                 <div className="flex items-center justify-center h-32">
                   <div className="text-center">
@@ -257,9 +258,9 @@ const FindItem = () => {
                   {filteredItems.map(item => (
                     <div 
                       key={item._id} 
-                      className={`group p-4 border rounded-xl cursor-pointer transition-all duration-200 hover:shadow-md ${
-                        selectedItem?._id === item._id 
-                          ? 'bg-blue-50 border-blue-300 shadow-md' 
+                      className={`p-4 border rounded-xl cursor-pointer transition hover:shadow-md ${
+                        selectedItem?._id === item._id
+                          ? 'bg-green-50 border-green-400'
                           : 'bg-white border-gray-200 hover:border-gray-300'
                       }`}
                       onClick={() => handleItemClick(item)}
@@ -329,11 +330,11 @@ const FindItem = () => {
             </div>
           </div>
 
-          <div className="col-span-2 grid grid-rows-9 h-full border border-gray-200 rounded-3xl">
-            <div className="row-span-1 p-4 flex items-center">
-              <h2 className="text-xl font-semibold">Found Items Map</h2>
+          <div className="col-span-2 flex flex-col bg-white rounded-2xl shadow border border-gray-100 overflow-hidden">
+            <div className="p-4 border-b">
+              <h2 className="text-lg font-semibold text-gray-800">Map View</h2>
             </div>
-            <div className="row-span-8 p-4">
+            <div className="flex-1 min-h-[400px]">
               {loading ? (
                 <div className="flex items-center justify-center h-full">
                   <p className="text-gray-500">Loading map...</p>
@@ -343,7 +344,7 @@ const FindItem = () => {
                   key={mapKey}
                   center={mapCenter}
                   zoom={mapZoom}
-                  style={{ height: '100%', width: '100%', borderRadius: '1rem' }}
+                  className="w-full h-full rounded-b-2xl z-0"
                 >
                   <MapController center={mapCenter} zoom={mapZoom} selectedItem={selectedItem} />
                   <TileLayer
@@ -423,6 +424,7 @@ const FindItem = () => {
           </div>
 
         </div>
+      </main>
       </div>
     </>
   );
