@@ -119,7 +119,7 @@ const FindItem = () => {
             name: "iPhone 13",
             category: "electronics",
             location: "Library Building",
-            coordinates: [14.5995, 120.9842],
+            coordinates: [7.1190, 79.9160],
             description: "Black iPhone 13 found near the main entrance"
           },
           {
@@ -127,7 +127,7 @@ const FindItem = () => {
             name: "Student ID",
             category: "documents",
             location: "Cafeteria",
-            coordinates: [14.6010, 120.9850],
+            coordinates: [7.1195, 79.9165],
             description: "Student ID card found under table 5"
           },
           {
@@ -135,11 +135,11 @@ const FindItem = () => {
             name: "Blue Backpack",
             category: "accessories",
             location: "Parking Lot A",
-            coordinates: [14.5980, 120.9860],
+            coordinates: [7.1185, 79.9155],
             description: "Blue Jansport backpack with math textbooks"
           }
         ];
-        console.log('Setting sample data:', sampleData); // Debug log
+        console.log('Setting sample data:', sampleData);
         setFoundItems(sampleData);
         setError('Using sample data - backend not connected');
       } finally {
@@ -368,117 +368,123 @@ const FindItem = () => {
               <div className="flex-1 min-h-[525px]">
                 {loading ? (
                   <div className="flex items-center justify-center h-full">
-                    <p className="text-gray-500">Loading map...</p>
+                    <div className="text-center">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
+                      <p className="text-gray-500">Loading map...</p>
+                    </div>
                   </div>
                 ) : (
-                  <MapContainer
-                    key={mapKey}
-                    center={[7.8731, 80.7718]}
-                    zoom={8}
-                    className="w-full h-full rounded-b-2xl z-0"
-                  >
-                    <MapController center={mapCenter} zoom={mapZoom} selectedItem={selectedItem} />
-                    <FitBoundsController items={filteredItems} selectedItem={selectedItem} resetView={resetView} lastReset={lastReset} />
-                    <TileLayer
-                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    />
-                    {filteredItems.map(item => {
-                      const coordinates = getItemCoordinates(item);
-                      return coordinates ? (
-                        <Marker key={item._id} position={coordinates}>
-                          <Popup maxWidth={340} minWidth={260} className="!p-0 !bg-transparent">
-                            <div className="bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden w-full transform transition duration-300 ease-out hover:scale-105 animate-popupFadeIn">
+                  <div className="w-full h-full">
+                    <MapContainer
+                      key={mapKey}
+                      center={[7.8731, 80.7718]}
+                      zoom={8}
+                      style={{ height: '100%', width: '100%' }}
+                      className="rounded-b-2xl z-0"
+                    >
+                      <MapController center={mapCenter} zoom={mapZoom} selectedItem={selectedItem} />
+                      <FitBoundsController items={filteredItems} selectedItem={selectedItem} resetView={resetView} lastReset={lastReset} />
+                      <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                      />
+                      {filteredItems.map(item => {
+                        const coordinates = getItemCoordinates(item);
+                        return coordinates ? (
+                          <Marker key={item._id} position={coordinates}>
+                            <Popup maxWidth={340} minWidth={260} className="!p-0 !bg-transparent">
+                              <div className="bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden w-full transform transition duration-300 ease-out hover:scale-105 animate-popupFadeIn">
 
-                              {/* Image */}
-                              {item.imageUrl ? (
-                                <div className="relative w-full h-44">
-                                  <img
-                                    src={`http://localhost:5000${item.imageUrl}`}
-                                    alt={item.name}
-                                    className="w-full h-full object-cover"
-                                    onError={(e) => { e.target.style.display = 'none'; }}
-                                  />
-                                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-                                </div>
-                              ) : (
-                                <div className="w-full h-44 bg-gray-100 flex items-center justify-center text-gray-400 text-2xl">
-                                  📷
-                                </div>
-                              )}
-
-                              {/* Content */}
-                              <div className="p-4 space-y-2">
-                                {/* Item Name */}
-                                <h3 className="text-lg font-bold text-gray-900 truncate">{item.name}</h3>
-
-                                {/* Location */}
-                                <div className="flex items-center gap-2 text-gray-600 text-sm truncate">
-                                  <span className="text-blue-500">📍</span>
-                                  <p>{getLocationName(item)}</p>
-                                </div>
-
-                                {/* Description */}
-                                <p className="text-gray-700 text-sm leading-relaxed line-clamp-3">{item.description}</p>
-
-                                {/* Tags */}
-                                <div className="flex flex-wrap gap-2">
-                                  {item.category && (
-                                    <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
-                                      {item.category}
-                                    </span>
-                                  )}
-                                  {item.reporter && (
-                                    <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
-                                      👤 {item.reporter.name}
-                                    </span>
-                                  )}
-                                </div>
-
-                                {/* Date */}
-                                {item.createdAt && (
-                                  <div className="pt-2 border-t border-gray-100">
-                                    <p className="text-gray-500 text-xs flex items-center gap-1">
-                                      🕒 Found on {new Date(item.createdAt).toLocaleDateString('en-US', {
-                                        year: 'numeric',
-                                        month: 'short',
-                                        day: 'numeric'
-                                      })}
-                                    </p>
+                                {/* Image */}
+                                {item.imageUrl ? (
+                                  <div className="relative w-full h-44">
+                                    <img
+                                      src={`http://localhost:5000${item.imageUrl}`}
+                                      alt={item.name}
+                                      className="w-full h-full object-cover"
+                                      onError={(e) => { e.target.style.display = 'none'; }}
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                                  </div>
+                                ) : (
+                                  <div className="w-full h-44 bg-gray-100 flex items-center justify-center text-gray-400 text-2xl">
+                                    📷
                                   </div>
                                 )}
 
-                                <button 
-                                  onClick={() => navigate('/claimItem', { state: { item } })}  
-                                  className="mt-4 px-4 py-2 bg-green-600 hover:bg-green-500 text-white rounded-md cursor-pointer w-full text-center font-semibold shadow transition">
-                                  Claim item
-                                </button>
+                                {/* Content */}
+                                <div className="p-4 space-y-2">
+                                  {/* Item Name */}
+                                  <h3 className="text-lg font-bold text-gray-900 truncate">{item.name}</h3>
+
+                                  {/* Location */}
+                                  <div className="flex items-center gap-2 text-gray-600 text-sm truncate">
+                                    <span className="text-blue-500">📍</span>
+                                    <p>{getLocationName(item)}</p>
+                                  </div>
+
+                                  {/* Description */}
+                                  <p className="text-gray-700 text-sm leading-relaxed line-clamp-3">{item.description}</p>
+
+                                  {/* Tags */}
+                                  <div className="flex flex-wrap gap-2">
+                                    {item.category && (
+                                      <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
+                                        {item.category}
+                                      </span>
+                                    )}
+                                    {item.reporter && (
+                                      <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
+                                        👤 {item.reporter.name}
+                                      </span>
+                                    )}
+                                  </div>
+
+                                  {/* Date */}
+                                  {item.createdAt && (
+                                    <div className="pt-2 border-t border-gray-100">
+                                      <p className="text-gray-500 text-xs flex items-center gap-1">
+                                        🕒 Found on {new Date(item.createdAt).toLocaleDateString('en-US', {
+                                          year: 'numeric',
+                                          month: 'short',
+                                          day: 'numeric'
+                                        })}
+                                      </p>
+                                    </div>
+                                  )}
+
+                                  <button 
+                                    onClick={() => navigate('/claimItem', { state: { item } })}  
+                                    className="mt-4 px-4 py-2 bg-green-600 hover:bg-green-500 text-white rounded-md cursor-pointer w-full text-center font-semibold shadow transition">
+                                    Claim item
+                                  </button>
+                                </div>
                               </div>
-                            </div>
 
-                            {/* Animation Styles */}
-                            <style jsx="true">{`
-                              @keyframes popupFadeIn {
-                                0% {
-                                  opacity: 0;
-                                  transform: translateY(-10px);
+                              {/* Animation Styles */}
+                              <style jsx="true">{`
+                                @keyframes popupFadeIn {
+                                  0% {
+                                    opacity: 0;
+                                    transform: translateY(-10px);
+                                  }
+                                  100% {
+                                    opacity: 1;
+                                    transform: translateY(0);
+                                  }
                                 }
-                                100% {
-                                  opacity: 1;
-                                  transform: translateY(0);
+                                .animate-popupFadeIn {
+                                  animation: popupFadeIn 0.3s ease-out forwards;
                                 }
-                              }
-                              .animate-popupFadeIn {
-                                animation: popupFadeIn 0.3s ease-out forwards;
-                              }
-                            `}</style>
-                          </Popup>
+                              `}</style>
+                            </Popup>
 
 
-                        </Marker>
-                      ) : null;
-                    })}
-                  </MapContainer>
+                          </Marker>
+                        ) : null;
+                      })}
+                    </MapContainer>
+                  </div>
                 )}
               </div>
             </div>
