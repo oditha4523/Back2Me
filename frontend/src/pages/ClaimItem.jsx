@@ -125,9 +125,13 @@ Thank you!`;
                                     }
 
                                     try {
+                                        const token = localStorage.getItem('token');
                                         const response = await fetch('http://localhost:5000/api/claims/submit-answer', {
                                             method: 'POST',
-                                            headers: { 'Content-Type': 'application/json' },
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'Authorization': token ? `Bearer ${token}` : ''
+                                            },
                                             body: JSON.stringify({ itemId: item._id, answer })
                                         });
 
@@ -136,7 +140,7 @@ Thank you!`;
                                             alert('Your answer has been submitted to the reporter!');
                                             setAnswer('');
                                         } else {
-                                            alert('Failed to send answer. Try again.');
+                                            alert(data.error || 'Failed to send answer. Try again.');
                                         }
                                     } catch (err) {
                                         console.error(err);

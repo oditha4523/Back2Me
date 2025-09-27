@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Twilio = require('twilio');
 const ItemModel = require('../models/itemModel');
+const protect = require('../middleware/authMiddleware');
 
 // Load Twilio credentials from .env
 const { TWILIO_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE, NODE_ENV } = process.env;
@@ -14,7 +15,7 @@ if (TWILIO_SID && TWILIO_AUTH_TOKEN) {
 }
 
 // POST /claim/submit-answer
-router.post('/submit-answer', async (req, res) => {
+router.post('/submit-answer',protect, async (req, res) => {
     try {
         const { itemId, answer } = req.body;
 
@@ -22,12 +23,23 @@ router.post('/submit-answer', async (req, res) => {
             return res.status(400).json({ success: false, error: 'itemId and answer are required' });
         }
 
+        // Log req.user for debugging
+        console.log('req.user:', req.user);
+        if (!req.user) {
+            return res.status(401).json({ success: false, error: 'User not authenticated. Token missing or invalid.' });
+        }
+
         const item = await ItemModel.findById(itemId);
         if (!item) return res.status(404).json({ success: false, error: 'Item not found' });
 
         if (!item.reporter || !item.reporter.phone) {
+            console.log('Reporter object:', item.reporter);
             return res.status(400).json({ success: false, error: 'Reporter phone number not found for this item.' });
         }
+
+        // Get claimer info from logged-in user
+        const claimerContact = `${req.user.name} | ${req.user.phone}`;
+        console.log(`Claimer Info: ${claimerContact}`);
 
         // Ensure the number is in E.164 format (required by Twilio)
         let toNumber = item.reporter.phone;
@@ -39,7 +51,7 @@ router.post('/submit-answer', async (req, res) => {
 
         // Development/testing: log the message instead of sending
         if (NODE_ENV === 'development' || !twilioClient || !TWILIO_PHONE) {
-            console.log(`\n[DEV MODE] SMS Preview\n--------------------------\nTo: ${toNumber}\nItem: "${item.name}"\nQuestion: "${item.verifyInfo}"\nAnswer: "${answer}"\n--------------------------\n`);
+            console.log(`\n[DEV MODE] SMS Preview\n--------------------------\nTo: ${toNumber}\nItem: "${item.name}"\nQuestion: "${item.verifyInfo}"\nAnswer: "${answer}"\nClaimer Contact: ${claimerContact}\n--------------------------\n`);
             return res.json({
                 success: true,
                 message: `Answer for "${item.name}" submitted successfully. (SMS previewed in development mode)`
@@ -47,20 +59,22 @@ router.post('/submit-answer', async (req, res) => {
         }
 
         // Production: send SMS via Twilio
-        await twilioClient.messages.create({
-            body: `Hello! Someone answered your verification question for "${item.name}".\nQuestion: "${item.verifyInfo}"\nAnswer: "${answer}"`,
-            from: TWILIO_PHONE,
-            to: toNumber
-        });
-
-        console.log(`SMS sent to ${toNumber} for item "${item.name}"`);
-
-
-        res.json({ success: true, message: 'Answer sent to reporter!' });
+        try {
+            await twilioClient.messages.create({
+                body: `Hello! Someone answered your verification question for "${item.name}".\nQuestion: "${item.verifyInfo}"\nAnswer: "${answer}"`,
+                from: TWILIO_PHONE,
+                to: toNumber
+            });
+            console.log(`SMS sent to ${toNumber} for item "${item.name}"`);
+            res.json({ success: true, message: 'Answer sent to reporter!' });
+        } catch (smsErr) {
+            console.error('Twilio SMS error:', smsErr);
+            res.status(500).json({ success: false, error: 'Twilio SMS error: ' + (smsErr.message || smsErr) });
+        }
 
     } catch (err) {
         console.error('Error in /submit-answer:', err);
-        res.status(500).json({ success: false, error: err.message || 'Failed to send answer' });
+        res.status(500).json({ success: false, error: 'Server error: ' + (err.message || 'Failed to send answer') });
     }
 });
 
