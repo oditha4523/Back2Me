@@ -249,10 +249,10 @@ const FindItem = () => {
         <Navbar className="relative z-50" />
 
         <main className="flex-grow p-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 min-h-[400px]">
 
             <div className="col-span-1 flex flex-col gap-6 w-full">
-              <div className="bg-white rounded-2xl p-5 shadow border border-gray-100">
+              <div className="bg-white rounded-2xl p-4 shadow border border-gray-100">
                 <h2 className="text-lg font-semibold text-gray-800 mb-3">Search Found Items</h2>
                 <div className="relative mb-3">
                   <input
@@ -278,7 +278,7 @@ const FindItem = () => {
                   <option value="others">Others</option>
                 </select>
               </div>
-              <div>
+              <div className="flex-1 max-h-[391px] overflow-y-auto pr-2 scrollable">
                 {loading ? (
                   <div className="flex items-center justify-center h-32">
                     <div className="text-center">
@@ -355,7 +355,7 @@ const FindItem = () => {
 
             </div>
 
-            <div className="col-span-2 flex flex-col bg-white rounded-2xl shadow border border-gray-100 overflow-hidden">
+            <div className="col-span-1 lg:col-span-2 flex flex-col bg-white rounded-2xl shadow border border-gray-100 overflow-hidden">
               <div className="flex justify-between items-center p-4 border-b border-gray-400">
                 <h2 className="text-lg font-semibold text-gray-800">Map View</h2>
                 <button
@@ -365,7 +365,7 @@ const FindItem = () => {
                   🔄 Reset View
                 </button>
               </div>
-              <div className="flex-1 min-h-[525px]">
+              <div className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[510px]">
                 {loading ? (
                   <div className="flex items-center justify-center h-full">
                     <div className="text-center">
@@ -378,9 +378,9 @@ const FindItem = () => {
                     <MapContainer
                       key={mapKey}
                       center={[7.8731, 80.7718]}
-                      zoom={8}
+                      zoom={7}
                       style={{ height: '100%', width: '100%' }}
-                      className="rounded-b-2xl z-0"
+                      className="w-full h-full rounded-b-2xl z-0"
                     >
                       <MapController center={mapCenter} zoom={mapZoom} selectedItem={selectedItem} />
                       <FitBoundsController items={filteredItems} selectedItem={selectedItem} resetView={resetView} lastReset={lastReset} />
