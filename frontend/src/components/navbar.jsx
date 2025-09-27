@@ -22,8 +22,8 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-black shadow-md sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="sticky top-0 z-50 px-4 sm:px-6 lg:px-8 pt-4">
+      <div className="max-w-5xl mx-auto bg-black/20 backdrop-blur-md border border-white/10 shadow-lg rounded-full px-6">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
@@ -84,16 +84,16 @@ const Navbar = () => {
 
                   {/* Dropdown with arrow */}
                   {showDropdown && (
-                    <div className="absolute right-0 mt-2 w-40 bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-50">
+                    <div className="absolute right-0 mt-2 w-40 bg-black/20 backdrop-blur-md border border-white/20 rounded-lg shadow-lg z-50">
                       {/* Arrow */}
-                      <div className="absolute -top-2 right-3 w-3 h-3 bg-gray-900 transform rotate-45 border-l border-t border-gray-700"></div>
+                      <div className="absolute -top-2 right-3 w-3 h-3 bg-black/20 backdrop-blur-md transform rotate-45 border-l border-t border-white/20"></div>
 
                       <button
                         onClick={() => {
                           navigate("/profile");
                           setShowDropdown(false);
                         }}
-                        className="flex items-center w-full px-4 py-2 text-white hover:text-green-400 hover:bg-gray-800 rounded-t-lg"
+                        className="flex items-center w-full px-4 py-2 text-white hover:text-green-400 hover:bg-white/10 rounded-t-lg"
                       >
                         Profile
                       </button>
@@ -103,7 +103,7 @@ const Navbar = () => {
                           navigate("/");
                           setShowDropdown(false);
                         }}
-                        className="flex items-center w-full px-4 py-2 text-white hover:text-green-400 hover:bg-gray-800 rounded-b-lg"
+                        className="flex items-center w-full px-4 py-2 text-white hover:text-green-400 hover:bg-white/10 rounded-b-lg"
                       >
                         <LogOut size={18} className="mr-2" />
                         Logout
@@ -146,11 +146,13 @@ const Navbar = () => {
             </button>
           </div>
         </div>
+      </div>
 
-        {/* Mobile Navigation Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-black border-t border-gray-700">
+      {/* Mobile Navigation Menu */}
+      {isMenuOpen && (
+        <div className="md:hidden mt-4 px-4">
+          <div className="max-w-5xl mx-auto bg-black/30 backdrop-blur-md border border-white/10 rounded-2xl px-4 py-3">
+            <div className="space-y-1">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
@@ -158,8 +160,8 @@ const Navbar = () => {
                   onClick={() => setIsMenuOpen(false)}
                   className={`block px-3 py-2 text-base font-medium transition-all duration-300 ease-in-out transform hover:translate-x-2 ${
                     location.pathname === link.path
-                      ? 'text-green-400 bg-gray-800'
-                      : 'text-white hover:text-green-400 hover:bg-gray-800'
+                      ? 'text-green-400 bg-white/10'
+                      : 'text-white hover:text-green-400 hover:bg-white/10'
                   }`}
                 >
                   {link.name}
@@ -167,7 +169,7 @@ const Navbar = () => {
               ))}
               
               {/* Mobile Auth Buttons */}
-              <div className="pt-4 border-t border-gray-700">
+              <div className="pt-4 border-t border-white/20">
                 {isLoggedIn() ? (
                   <div className="space-y-2">
                     <button
@@ -175,7 +177,7 @@ const Navbar = () => {
                         navigate("/profile");
                         setIsMenuOpen(false);
                       }}
-                      className="flex items-center space-x-2 w-full px-3 py-2 text-left text-white hover:text-green-400 hover:bg-gray-800 transition-all duration-300 ease-in-out transform hover:translate-x-2"
+                      className="flex items-center space-x-2 w-full px-3 py-2 text-left text-white hover:text-green-400 hover:bg-white/10 transition-all duration-300 ease-in-out transform hover:translate-x-2"
                     >
                       <div className="h-5 w-5 bg-gray-600 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out hover:bg-gray-500">
                         <img
@@ -192,7 +194,7 @@ const Navbar = () => {
                         navigate("/");
                         setIsMenuOpen(false);
                       }}
-                      className="flex items-center w-full px-3 py-2 text-left text-white hover:text-green-400 hover:bg-gray-800 transition-all duration-300 ease-in-out transform hover:translate-x-2"
+                      className="flex items-center w-full px-3 py-2 text-left text-white hover:text-green-400 hover:bg-white/10 transition-all duration-300 ease-in-out transform hover:translate-x-2"
                     >
                       <LogOut size={18} className="mr-2" />
                       Logout
@@ -202,7 +204,7 @@ const Navbar = () => {
                   <div className="space-y-2">
                     <button
                       onClick={() => navigate("/login?mode=login")}
-                      className="w-full text-left px-3 py-2 text-white hover:text-green-400 hover:bg-gray-800 transition-all duration-300 ease-in-out transform hover:translate-x-2"
+                      className="w-full text-left px-3 py-2 text-white hover:text-green-400 hover:bg-white/10 transition-all duration-300 ease-in-out transform hover:translate-x-2"
                     >
                       Login
                     </button>
@@ -217,8 +219,8 @@ const Navbar = () => {
               </div>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </nav>
   );
 };

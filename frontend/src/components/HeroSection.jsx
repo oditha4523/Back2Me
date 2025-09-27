@@ -65,7 +65,7 @@ const HeroSection = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black relative">
+    <div className="min-h-[90vh] bg-black relative">
       {/* Optional overlay for better text readability */}
       <div className="absolute inset-0 bg-black bg-opacity-20"></div>
       
