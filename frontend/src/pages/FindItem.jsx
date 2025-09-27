@@ -5,6 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import Navbar from '../components/navbar';
 import { FaSearch } from "react-icons/fa";
+import { MdLocationOn } from "react-icons/md";
 
 // Fix for default markers in react-leaflet
 delete L.Icon.Default.prototype._getIconUrl;
@@ -393,61 +394,79 @@ const FindItem = () => {
                           const coordinates = getItemCoordinates(selectedItem);
                           return coordinates ? (
                             <Marker key={selectedItem._id} position={coordinates}>
-                              <Popup maxWidth={340} minWidth={260} className="!p-0 !bg-transparent">
-                                <div className="bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden w-full transform transition duration-300 ease-out hover:scale-105 animate-popupFadeIn">
-                                  {/* Image */}
-                                  {selectedItem.imageUrl ? (
-                                    <div className="relative w-full h-44">
-                                      <img
-                                        src={`http://localhost:5000${selectedItem.imageUrl}`}
-                                        alt={selectedItem.name}
-                                        className="w-full h-full object-cover"
-                                        onError={(e) => { e.target.style.display = 'none'; }}
-                                      />
-                                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-                                    </div>
-                                  ) : (
-                                    <div className="w-full h-44 bg-gray-100 flex items-center justify-center text-gray-400 text-2xl">
-                                      📷
-                                    </div>
-                                  )}
+                              <Popup maxWidth={200} minWidth={180} className="!p-0 !bg-transparent">
+                                <div className="bg-white rounded-lg shadow-md border border-gray-100 overflow-hidden w-full">
 
-                                  {/* Content */}
-                                  <div className="p-4 space-y-2">
-                                    <h3 className="text-lg font-bold text-gray-900 truncate">{selectedItem.name}</h3>
-                                    <div className="flex items-center gap-2 text-gray-600 text-sm truncate">
-                                      <span className="text-blue-500">📍</span>
-                                      <p>{getLocationName(selectedItem)}</p>
-                                    </div>
-                                    <p className="text-gray-700 text-sm leading-relaxed line-clamp-3">{selectedItem.description}</p>
-                                    <div className="flex flex-wrap gap-2">
-                                      {selectedItem.category && (
-                                        <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
-                                          {selectedItem.category}
-                                        </span>
-                                      )}
-                                      {selectedItem.reporter && (
-                                        <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
-                                          👤 {selectedItem.reporter.name}
-                                        </span>
-                                      )}
-                                    </div>
-                                    {selectedItem.createdAt && (
-                                      <div className="pt-2 border-t border-gray-100">
-                                        <p className="text-gray-500 text-xs flex items-center gap-1">
-                                          🕒 Found on {new Date(selectedItem.createdAt).toLocaleDateString('en-US', {
-                                            year: 'numeric',
-                                            month: 'short',
-                                            day: 'numeric'
-                                          })}
-                                        </p>
+                                  {/* Image + Content Row */}
+                                  <div className="flex gap-2 p-2 pb-0 items-stretch">
+                                    {/* Image */}
+                                    {selectedItem.imageUrl ? (
+                                      <div className="relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden">
+                                        <img
+                                          src={`http://localhost:5000${selectedItem.imageUrl}`}
+                                          alt={selectedItem.name}
+                                          className="w-full h-full object-cover"
+                                          onError={(e) => { e.target.style.display = 'none'; }}
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                                      </div>
+                                    ) : (
+                                      <div className="w-16 h-16 bg-gray-100 flex items-center justify-center text-gray-400 text-lg flex-shrink-0 rounded-lg">
+                                        📷
                                       </div>
                                     )}
+
+                                    {/* Content */}
+                                    <div className="flex-1 flex flex-col justify-between">
+                                      <div className="space-y-0.5 flex-1">
+                                        {/* Name */}
+                                        <h3 className="text-xs font-semibold text-gray-900 truncate">{selectedItem.name}</h3>
+
+                                        {/* Location */}
+                                        <p className="flex items-center text-gray-600 text-[9px] gap-1 truncate">
+                                          <MdLocationOn /> {getLocationName(selectedItem)}
+                                        </p>
+
+                                        {/* Description */}
+                                        <p className="text-gray-700 text-[10px] leading-snug line-clamp-2">
+                                          {selectedItem.description}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Found Date (kept separate, no extra gap) */}
+                                  {selectedItem.createdAt && (
+                                    <p className="px-2 text-gray-400 text-[8px] -mt-0.5">
+                                      🕒 {new Date(selectedItem.createdAt).toLocaleDateString("en-US", {
+                                        year: "numeric",
+                                        month: "short",
+                                        day: "numeric"
+                                      })}
+                                    </p>
+                                  )}
+
+                                  {/* Category & Reporter */}
+                                  <div className="px-2 pb-2 flex flex-wrap items-center gap-1">
+                                    {selectedItem.category && (
+                                      <span className="px-2 py-0.5 rounded-full text-[8px] font-medium bg-blue-50 text-blue-700">
+                                        {selectedItem.category}
+                                      </span>
+                                    )}
+                                    {selectedItem.reporter && (
+                                      <span className="px-2 py-0.5 rounded-full text-[8px] font-medium bg-green-50 text-green-700 flex items-center gap-1">
+                                        👤 {selectedItem.reporter.name}
+                                      </span>
+                                    )}
+                                  </div>
+
+                                  {/* Claim Item Button */}
+                                  <div className="px-2 pb-2 flex justify-center">
                                     <button
-                                      onClick={() => navigate('/claimItem', { state: { item: selectedItem } })}
-                                      className="mt-4 px-4 py-2 bg-green-600 hover:bg-green-500 text-white rounded-md cursor-pointer w-full text-center font-semibold shadow transition"
+                                      onClick={() => navigate("/claimItem", { state: { item: selectedItem } })}
+                                      className="px-3 py-1 bg-green-600 hover:bg-green-500 text-white text-[9px] rounded-md font-medium transition"
                                     >
-                                      Claim item
+                                      Claim Item
                                     </button>
                                   </div>
                                 </div>
@@ -459,65 +478,85 @@ const FindItem = () => {
                           const coordinates = getItemCoordinates(item);
                           return coordinates ? (
                             <Marker key={item._id} position={coordinates}>
-                              <Popup maxWidth={340} minWidth={260} className="!p-0 !bg-transparent">
-                                <div className="bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden w-full transform transition duration-300 ease-out hover:scale-105 animate-popupFadeIn">
-                                  {/* Image */}
-                                  {item.imageUrl ? (
-                                    <div className="relative w-full h-44">
-                                      <img
-                                        src={`http://localhost:5000${item.imageUrl}`}
-                                        alt={item.name}
-                                        className="w-full h-full object-cover"
-                                        onError={(e) => { e.target.style.display = 'none'; }}
-                                      />
-                                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-                                    </div>
-                                  ) : (
-                                    <div className="w-full h-44 bg-gray-100 flex items-center justify-center text-gray-400 text-2xl">
-                                      📷
-                                    </div>
-                                  )}
+                              <Popup maxWidth={200} minWidth={180} className="!p-0 !bg-transparent">
+                                <div className="bg-white rounded-lg shadow-md border border-gray-100 overflow-hidden w-full">
 
-                                  {/* Content */}
-                                  <div className="p-4 space-y-2">
-                                    <h3 className="text-lg font-bold text-gray-900 truncate">{item.name}</h3>
-                                    <div className="flex items-center gap-2 text-gray-600 text-sm truncate">
-                                      <span className="text-blue-500">📍</span>
-                                      <p>{getLocationName(item)}</p>
-                                    </div>
-                                    <p className="text-gray-700 text-sm leading-relaxed line-clamp-3">{item.description}</p>
-                                    <div className="flex flex-wrap gap-2">
-                                      {item.category && (
-                                        <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
-                                          {item.category}
-                                        </span>
-                                      )}
-                                      {item.reporter && (
-                                        <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
-                                          👤 {item.reporter.name}
-                                        </span>
-                                      )}
-                                    </div>
-                                    {item.createdAt && (
-                                      <div className="pt-2 border-t border-gray-100">
-                                        <p className="text-gray-500 text-xs flex items-center gap-1">
-                                          🕒 Found on {new Date(item.createdAt).toLocaleDateString('en-US', {
-                                            year: 'numeric',
-                                            month: 'short',
-                                            day: 'numeric'
-                                          })}
-                                        </p>
+                                  {/* Image + Content Row */}
+                                  <div className="flex gap-2 p-2 pb-0 items-stretch">
+                                    {/* Image */}
+                                    {item.imageUrl ? (
+                                      <div className="relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden">
+                                        <img
+                                          src={`http://localhost:5000${item.imageUrl}`}
+                                          alt={item.name}
+                                          className="w-full h-full object-cover"
+                                          onError={(e) => { e.target.style.display = 'none'; }}
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                                      </div>
+                                    ) : (
+                                      <div className="w-16 h-16 bg-gray-100 flex items-center justify-center text-gray-400 text-lg flex-shrink-0 rounded-lg">
+                                        📷
                                       </div>
                                     )}
+
+                                    {/* Content */}
+                                    <div className="flex-1 flex flex-col justify-between">
+                                      <div className="space-y-0.5 flex-1">
+                                        {/* Name */}
+                                        <h3 className="text-xs font-semibold text-gray-900 truncate">{item.name}</h3>
+
+                                        {/* Location */}
+                                        <p className="flex items-center text-gray-600 text-[9px] gap-1 truncate">
+                                          <MdLocationOn /> {getLocationName(item)}
+                                        </p>
+
+                                        {/* Description */}
+                                        <p className="text-gray-700 text-[10px] leading-snug line-clamp-2">
+                                          {item.description}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Found Date (kept separate, no extra gap) */}
+                                  {item.createdAt && (
+                                    <p className="px-2 text-gray-400 text-[8px] -mt-0.5">
+                                      🕒 {new Date(item.createdAt).toLocaleDateString("en-US", {
+                                        year: "numeric",
+                                        month: "short",
+                                        day: "numeric"
+                                      })}
+                                    </p>
+                                  )}
+
+                                  {/* Category & Reporter */}
+                                  <div className="px-2 pb-2 flex flex-wrap items-center gap-1">
+                                    {item.category && (
+                                      <span className="px-2 py-0.5 rounded-full text-[8px] font-medium bg-blue-50 text-blue-700">
+                                        {item.category}
+                                      </span>
+                                    )}
+                                    {item.reporter && (
+                                      <span className="px-2 py-0.5 rounded-full text-[8px] font-medium bg-green-50 text-green-700 flex items-center gap-1">
+                                        👤 {item.reporter.name}
+                                      </span>
+                                    )}
+                                  </div>
+
+                                  {/* Claim Item Button */}
+                                  <div className="px-2 pb-2 flex justify-center">
                                     <button
-                                      onClick={() => navigate('/claimItem', { state: { item } })}
-                                      className="mt-4 px-4 py-2 bg-green-600 hover:bg-green-500 text-white rounded-md cursor-pointer w-full text-center font-semibold shadow transition"
+                                      onClick={() => navigate("/claimItem", { state: { item } })}
+                                      className="px-3 py-1 bg-green-600 hover:bg-green-500 text-white text-[9px] rounded-md font-medium transition"
                                     >
-                                      Claim item
+                                      Claim Item
                                     </button>
                                   </div>
                                 </div>
                               </Popup>
+
+
                             </Marker>
                           ) : null;
                         })}
