@@ -24,7 +24,7 @@ const ClaimItem = () => {
     }
 
     return (
-        <div className="flex flex-col min-h-screen bg-white">
+        <div className="flex flex-col min-h-screen" style={{ backgroundColor: 'rgba(241, 247, 241, 1)' }}>
             <Navbar />
 
             <main className="flex-grow flex flex-col justify-center items-center px-6 py-12 space-y-8">

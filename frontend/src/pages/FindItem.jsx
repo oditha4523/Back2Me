@@ -246,7 +246,7 @@ const FindItem = () => {
 
   return (
     <>
-      <div className="flex flex-col min-h-screen bg-gray-50">
+      <div className="flex flex-col min-h-screen" style={{ backgroundColor: 'rgba(241, 247, 241, 1)' }}>
         <Navbar className="relative z-50" />
 
         <main className="flex-grow p-6">

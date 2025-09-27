@@ -23,7 +23,7 @@ const Navbar = () => {
 
   return (
     <nav className="sticky top-0 z-50 px-4 sm:px-6 lg:px-8 pt-4">
-      <div className="max-w-5xl mx-auto bg-black/20 backdrop-blur-md border border-white/10 shadow-lg rounded-full px-6">
+      <div className="max-w-5xl mx-auto bg-green-600/20 backdrop-blur-md border border-green-400/20 shadow-lg rounded-full px-6">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
@@ -31,7 +31,8 @@ const Navbar = () => {
               <img 
                 src={logo} 
                 alt="Back2Me Logo" 
-                className="h-12 w-[60px] object-cover"
+                className="h-18 w-auto object-contain"
+                style={{ imageRendering: 'crisp-edges' }}
               />
             </Link>
           </div>
@@ -43,15 +44,15 @@ const Navbar = () => {
                 <Link
                   key={link.name}
                   to={link.path}
-                  className={`relative px-3 py-2 text-sm font-medium transition-all duration-300 ease-in-out transform hover:scale-105 ${
+                  className={`relative px-3 py-2 text-l font-medium transition-all duration-300 ease-in-out transform hover:scale-105 ${
                     location.pathname === link.path
                       ? 'text-[#3CB371]'
-                      : 'text-white hover:text-[#36a163]'
+                      : 'text-black hover:text-[#36a163]'
                   } group`}
                 >
                   {link.name}
                   {/* Animated underline */}
-                  <span className={`absolute bottom-0 left-0 w-full h-0.5 bg-[#36a163] transform transition-all duration-300 ease-in-out ${
+                  <span className={`absolute bottom-0 left-0 w-full h-1 bg-[#36a163] rounded-full transform transition-all duration-300 ease-in-out ${
                     location.pathname === link.path 
                       ? 'scale-x-100' 
                       : 'scale-x-0 group-hover:scale-x-100'
@@ -84,9 +85,9 @@ const Navbar = () => {
 
                   {/* Dropdown with arrow */}
                   {showDropdown && (
-                    <div className="absolute right-0 mt-2 w-40 bg-black/20 backdrop-blur-md border border-white/20 rounded-lg shadow-lg z-50">
+                    <div className="absolute right-0 mt-2 w-40 bg-green-600/20 backdrop-blur-md border border-green-400/20 rounded-lg shadow-lg z-50">
                       {/* Arrow */}
-                      <div className="absolute -top-2 right-3 w-3 h-3 bg-black/20 backdrop-blur-md transform rotate-45 border-l border-t border-white/20"></div>
+                      <div className="absolute -top-2 right-3 w-3 h-3 bg-green-600/20 backdrop-blur-md transform rotate-45 border-l border-t border-green-400/20"></div>
 
                       <button
                         onClick={() => {
@@ -151,7 +152,7 @@ const Navbar = () => {
       {/* Mobile Navigation Menu */}
       {isMenuOpen && (
         <div className="md:hidden mt-4 px-4">
-          <div className="max-w-5xl mx-auto bg-black/30 backdrop-blur-md border border-white/10 rounded-2xl px-4 py-3">
+          <div className="max-w-5xl mx-auto bg-green-600/20 backdrop-blur-md border border-green-400/20 rounded-2xl px-4 py-3">
             <div className="space-y-1">
               {navLinks.map((link) => (
                 <Link

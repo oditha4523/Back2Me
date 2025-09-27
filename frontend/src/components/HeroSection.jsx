@@ -65,9 +65,9 @@ const HeroSection = () => {
   };
 
   return (
-    <div className="min-h-[90vh] bg-black relative">
+    <div className="min-h-[90vh] relative" style={{ backgroundColor: 'rgba(241, 247, 241, 1)' }}>
       {/* Optional overlay for better text readability */}
-      <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+      {/* <div className="absolute inset-0 bg-white bg-opacity-20"></div> */}
       
       <div className="container mx-auto px-6 md:px-4 pt-4 relative z-10">
         <motion.div 
@@ -82,8 +82,8 @@ const HeroSection = () => {
             variants={itemVariants}
           >
             <motion.h1 
-              className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl text-white mb-8 ml-16 text-center md:text-left drop-shadow-2xl w-full"
-              style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)' }}
+              className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl text-green mb-8 ml-1 text-center md:text-left drop-shadow-2xl w-full"
+              style={{ textShadow: '2px 2px 4px rgba(21, 179, 89, 0.8)' }}
               variants={textVariants}
             >
               Together,<br />We bring it <br />Back.
@@ -91,7 +91,7 @@ const HeroSection = () => {
             
             {/* Action Buttons */}
             <motion.div 
-              className="flex flex-row gap-3 h-14 ml-16 justify-center md:justify-start"
+              className="flex flex-row gap-3 h-14 ml-1 justify-center md:justify-start"
               variants={buttonVariants}
             >
               <Link 
@@ -111,7 +111,7 @@ const HeroSection = () => {
 
           {/* Right Column - Hero Image */}
           <motion.div 
-            className="flex justify-center pl-16 items-center"
+            className="flex justify-center items-center"
             variants={itemVariants}
           >
             <motion.img 

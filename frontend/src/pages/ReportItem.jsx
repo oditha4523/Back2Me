@@ -22,12 +22,12 @@ const ReportItem = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden">
+    <div className="flex flex-col h-screen overflow-hidden" style={{ backgroundColor: 'rgba(241, 247, 241, 1)' }}>
       {/* Navbar stays at top */}
       <Navbar />
 
       {/* Main Section */}
-      <div className="flex-1 bg-gray-50 flex items-center justify-center px-4">
+      <div className="flex-1 flex items-center justify-center px-4" style={{ backgroundColor: 'rgba(241, 247, 241, 1)' }}>
         <div className="max-w-2xl text-center">
           <h1 className="text-5xl font-bold mb-4 text-gray-800">
             Found Something Important?

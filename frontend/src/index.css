@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 body {
-  background-color: black;
+  background-color: rgba(241, 247, 241, 1);
   margin: 0;
   padding: 0;
 }
 
 html {
-  background-color: black;
+  background-color: rgba(241, 247, 241, 1);
 }
 
 /* Custom scrollbar */

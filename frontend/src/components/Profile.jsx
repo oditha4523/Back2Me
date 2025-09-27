@@ -27,7 +27,7 @@ const Profile = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-white flex flex-col items-center p-6">
+      <div className="min-h-screen flex flex-col items-center p-6" style={{ backgroundColor: 'rgba(241, 247, 241, 1)' }}>
         <div className="w-full max-w-5xl bg-white rounded-3xl shadow-lg flex flex-col md:flex-row items-center justify-center md:items-start p-8 gap-16 mb-10">
 
           {/* Left Profile Image and QR Button */}
