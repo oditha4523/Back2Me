@@ -66,7 +66,9 @@ const HeroSection = () => {
   };
 
   return (
-    <div className="min-h-[90vh] relative" style={{ backgroundColor: 'rgba(241, 247, 241, 1)' }}>
+    <div 
+      className="relative flex items-center justify-center h-full w-full bg-[#F1F7F1] overflow-hidden"
+    >
       <style>{`
         @font-face {
           font-family: 'Cultural-Literature-Demo';
@@ -74,33 +76,42 @@ const HeroSection = () => {
           font-weight: normal;
           font-style: normal;
         }
+          html, body, #root {
+          height: 100%;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+        }
       `}</style>
       {/* Optional overlay for better text readability */}
       {/* <div className="absolute inset-0 bg-white bg-opacity-20"></div> */}
       
-      <div className="container mx-auto px-6 md:px-4 pt-4 relative z-10">
+      <div className="w-full h-full flex items-center justify-center px-6 md:px-12 lg:px-24 xl:px-32">
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 min-h-[80vh] items-center"
+          className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center w-full"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
           {/* Left Column - Text and Buttons */}
           <motion.div 
-            className="flex flex-col justify-center items-center md:items-start w-full"
+            className="flex flex-col justify-center items-center md:items-start text-center md:text-left"
             variants={itemVariants}
           >
             <motion.h1 
-              className="text-xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl text-green mb-8 ml-1 text-center md:text-left drop-shadow-2xl w-full"
-              style={{ textShadow: '2px 2px 4px rgba(21, 179, 89, 0.8)' }}
-              variants={textVariants}
-            >
-              <span style={{ fontFamily: 'Cultural-Literature-Demo, serif', color:'#3CB371' }}>Together</span><br />We bring it <br />Back.
-            </motion.h1>
+  className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-green mb-6 sm:mb-10 text-center md:text-left leading-tight"
+  style={{ textShadow: '2px 2px 4px rgba(21, 179, 89, 0.8)' }}
+  variants={textVariants}
+>
+  <span style={{ fontFamily: 'Cultural-Literature-Demo, serif', color:'#3CB371' }}>
+    Together
+  </span><br />We bring it <br />Back.
+</motion.h1>
+
             
             {/* Action Buttons */}
             <motion.div 
-              className="flex flex-row gap-3 h-14 ml-1 justify-center md:justify-start"
+              className="flex flex-row gap-4 justify-center md:justify-start"
               variants={buttonVariants}
             >
               <Link 
@@ -126,7 +137,7 @@ const HeroSection = () => {
             <motion.img 
               src={heroImage}
               alt="Hero illustration"
-              className="w-full max-w-xs lg:max-w-md h-auto object-contain"
+              className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl h-auto object-contain"
               variants={imageVariants}
             />
           </motion.div>

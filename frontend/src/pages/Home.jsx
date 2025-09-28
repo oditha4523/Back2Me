@@ -1,17 +1,19 @@
 import React from 'react'
 import Navbar from '../components/navbar';
 import HeroSection from '../components/HeroSection';
-import HowItWorksSection from '../components/HowItWorksSection';
 
 const Home = () => {
   return (
-    <>
+    <div className="h-screen flex flex-col overflow-hidden">
+      {/* Navbar auto height */}
       <Navbar />
-      <HeroSection />
-      {/* <HowItWorksSection /> */}
-    </>
+
+      {/* Hero fills remaining height */}
+      <div className="flex-1 overflow-hidden">
+        <HeroSection />
+      </div>
+    </div>
   )
 }
 
 export default Home
-
