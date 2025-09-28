@@ -2,6 +2,7 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import heroImage from '../assets/hero-image.png';
+import '../assets/Fonts/Cultural-Literature-Demo-BF684d3d082fa20.otf';
 
 const HeroSection = () => {
   const containerVariants = {
@@ -66,6 +67,14 @@ const HeroSection = () => {
 
   return (
     <div className="min-h-[90vh] relative" style={{ backgroundColor: 'rgba(241, 247, 241, 1)' }}>
+      <style>{`
+        @font-face {
+          font-family: 'Cultural-Literature-Demo';
+          src: url('./src/assets/Fonts/Cultural-Literature-Demo-BF684d3d082fa20.otf') format('opentype');
+          font-weight: normal;
+          font-style: normal;
+        }
+      `}</style>
       {/* Optional overlay for better text readability */}
       {/* <div className="absolute inset-0 bg-white bg-opacity-20"></div> */}
       
@@ -82,11 +91,11 @@ const HeroSection = () => {
             variants={itemVariants}
           >
             <motion.h1 
-              className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl text-green mb-8 ml-1 text-center md:text-left drop-shadow-2xl w-full"
+              className="text-xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl text-green mb-8 ml-1 text-center md:text-left drop-shadow-2xl w-full"
               style={{ textShadow: '2px 2px 4px rgba(21, 179, 89, 0.8)' }}
               variants={textVariants}
             >
-              Together,<br />We bring it <br />Back.
+              <span style={{ fontFamily: 'Cultural-Literature-Demo, serif', color:'#3CB371' }}>Together</span><br />We bring it <br />Back.
             </motion.h1>
             
             {/* Action Buttons */}
@@ -96,13 +105,13 @@ const HeroSection = () => {
             >
               <Link 
                 to="/find"
-                className="bg-[#3CB371]  hover:bg-[#36a163] text-white px-6 py-3 md:px-8 md:py-3 rounded-4xl text-sm md:text-lg font-small transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg text-center w-32 md:w-40"
+                className="bg-[#3CB371]  hover:bg-[#36a163] text-white px-6 py-3 md:px-8 md:py-3 rounded-4xl text-xs md:text-base font-bold transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg text-center w-32 md:w-40"
               >
                 Find Item
               </Link>
               <Link 
                 to="/report"
-                className="bg-[#3CB371]  hover:bg-[#36a163] text-white px-6 py-3 md:px-8 md:py-3 rounded-4xl text-sm md:text-lg font-small transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg text-center w-32 md:w-40"
+                className="bg-[#3CB371]  hover:bg-[#36a163] text-white px-6 py-3 md:px-8 md:py-3 rounded-4xl text-xs md:text-base font-bold transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg text-center w-32 md:w-40"
               >
                 Report Item
               </Link>

@@ -6,6 +6,7 @@ import ReportItemModel from '../components/ReportItemModel';
 import LoginPromptModal from '../components/LoginPromptModal';
 import { isLoggedIn } from '../utils/auth';
 
+
 const ReportItem = () => {
   const navigate = useNavigate();
   const [showLearnMore, setShowLearnMore] = useState(false);
@@ -29,7 +30,7 @@ const ReportItem = () => {
       {/* Main Section */}
       <div className="flex-1 flex items-center justify-center px-4" style={{ backgroundColor: 'rgba(241, 247, 241, 1)' }}>
         <div className="max-w-2xl text-center">
-          <h1 className="text-5xl font-bold mb-4 text-gray-800">
+          <h1 className="text-5xl font-bold mb-4 text-gray-800" >
             Found Something Important?
           </h1>
           <h2 className="text-3xl font-semibold mb-3 text-green-700">

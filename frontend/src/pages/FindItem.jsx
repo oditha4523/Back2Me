@@ -361,9 +361,9 @@ const FindItem = () => {
                 <h2 className="text-lg font-semibold text-gray-800">Map View</h2>
                 <button
                   onClick={handleResetView}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-sm font-medium rounded-lg shadow-sm transition"
+                  className="flex items-center gap-2 px-4 py-2 bg-green-100 hover:bg-gray-200 text-sm font-medium rounded-lg shadow-sm transition"
                 >
-                  🔄 Reset View
+                  Reset View
                 </button>
               </div>
               <div className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[510px]">
