@@ -1,9 +1,12 @@
 const express = require('express');
-const { registerUser, login  } = require('../controllers/authController');
+const { registerUser, login, uploadAvatar  } = require('../controllers/authController');
+const protect = require('../middleware/authMiddleware');
+const upload = require('../middleware/uploadMiddleware');
 
 const router = express.Router();
 
 router.post('/register', registerUser);
 router.post('/login', login);
+router.post('/upload-avatar', protect, upload.single("avatar"), uploadAvatar);
 
 module.exports = router;
