@@ -191,6 +191,11 @@ const FindItem = () => {
 
   // Function to convert coordinates to location name
   const getLocationName = (item) => {
+    // First priority: use locationName from database if available
+    if (item.locationName && typeof item.locationName === 'string' && item.locationName.trim() !== '') {
+      return item.locationName;
+    }
+
     const coordinates = getItemCoordinates(item);
     if (!coordinates) return item.location || 'Unknown Location';
 
