@@ -53,7 +53,7 @@ const registerUser = async (req, res) => {
     // 7. Respond with user info and token
     res.status(201).json({
         success: true,
-        user: { id: user._id, name: user.name, email: user.email, phone: user.phone, qrCode: user.qrCode, createdAt: user.createdAt },
+        user: { id: user._id, name: user.name, email: user.email, phone: user.phone, qrCode: user.qrCode, avatar: user.avatar, createdAt: user.createdAt },
         token
       });
 
@@ -91,7 +91,7 @@ const login = async (req, res) => {
     // 4. Respond with user info + token
     res.status(200).json({
       success: true,
-      user: { id: user._id, name: user.name, email: user.email, phone: user.phone, createdAt: user.createdAt  },
+      user: { id: user._id, name: user.name, email: user.email, phone: user.phone, avatar: user.avatar, createdAt: user.createdAt  },
       token
     });
 
@@ -100,5 +100,27 @@ const login = async (req, res) => {
   }
 };
 
+//Avatar upload function
+const uploadAvatar = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: "No file uploaded" });
+    }
 
-module.exports = { registerUser, login };
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found" });
+    }
+
+    // Store file path in DB (e.g. /uploads/filename.png)
+    user.avatar = `/uploads/${req.file.filename}`;
+    await user.save();
+
+    res.json({ success: true, avatar: user.avatar });
+  } catch (err) {
+    console.error("Upload error:", err);
+    res.status(500).json({ success: false, error: "Failed to upload avatar" });
+  }
+};
+
+module.exports = {registerUser, login, uploadAvatar };

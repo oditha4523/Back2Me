@@ -1,5 +1,5 @@
-import React, { useState} from 'react';
-import { Link, useLocation , useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { getUser, isLoggedIn, logout } from "../utils/auth";
 import { LogOut } from "lucide-react";
@@ -9,7 +9,23 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+
   const user = getUser();
+
+  const [userInfo, setUserInfo] = useState(getUser());
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const updatedUser = JSON.parse(localStorage.getItem("user"));
+      setUserInfo(updatedUser);
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -28,9 +44,9 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link to="/" className="flex items-center space-x-2">
-              <img 
-                src={logo} 
-                alt="Back2Me Logo" 
+              <img
+                src={logo}
+                alt="Back2Me Logo"
                 className="h-18 w-auto object-contain"
                 style={{ imageRendering: 'crisp-edges' }}
               />
@@ -44,19 +60,17 @@ const Navbar = () => {
                 <Link
                   key={link.name}
                   to={link.path}
-                  className={`relative px-3 py-2 text-l font-medium transition-all duration-300 ease-in-out transform hover:scale-105 ${
-                    location.pathname === link.path
-                      ? 'text-[#3CB371]'
-                      : 'text-black hover:text-[#36a163]'
-                  } group`}
+                  className={`relative px-3 py-2 text-l font-medium transition-all duration-300 ease-in-out transform hover:scale-105 ${location.pathname === link.path
+                    ? 'text-[#3CB371]'
+                    : 'text-black hover:text-[#36a163]'
+                    } group`}
                 >
                   {link.name}
                   {/* Animated underline */}
-                  <span className={`absolute bottom-0 left-0 w-full h-1 bg-[#36a163] rounded-full transform transition-all duration-300 ease-in-out ${
-                    location.pathname === link.path 
-                      ? 'scale-x-100' 
-                      : 'scale-x-0 group-hover:scale-x-100'
-                  }`}></span>
+                  <span className={`absolute bottom-0 left-0 w-full h-1 bg-[#36a163] rounded-full transform transition-all duration-300 ease-in-out ${location.pathname === link.path
+                    ? 'scale-x-100'
+                    : 'scale-x-0 group-hover:scale-x-100'
+                    }`}></span>
                 </Link>
               ))}
             </div>
@@ -74,11 +88,23 @@ const Navbar = () => {
                     className="flex items-center space-x-2 text-white hover:text-green-400 transition-all duration-300 ease-in-out transform hover:scale-105"
                   >
                     <div className="h-8 w-8 bg-gray-600 rounded-full flex items-center justify-center overflow-hidden">
-                      <img
-                        src={user?.avatar || "https://via.placeholder.com/40"}
-                        alt="profile"
-                        className="w-full h-full object-cover rounded-full"
-                      />
+                      {user?.avatar ? (
+                        <img
+                          src={userInfo?.avatar ? `http://localhost:5000${userInfo.avatar}` : "https://via.placeholder.com/40"}
+                          alt="profile"
+                          className="w-full h-full object-cover rounded-full"
+                        />
+                      ) : (
+                        <span className="text-xs font-bold text-white">
+                          {user?.name
+                            ? user.name
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")
+                              .toUpperCase()
+                            : "?"}
+                        </span>
+                      )}
                     </div>
                     <span className="text-sm font-medium">{user?.name || "Profile"}</span>
                   </button>
@@ -159,16 +185,15 @@ const Navbar = () => {
                   key={link.name}
                   to={link.path}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`block px-3 py-2 text-base font-medium transition-all duration-300 ease-in-out transform hover:translate-x-2 ${
-                    location.pathname === link.path
-                      ? 'text-green-400 bg-white/10'
-                      : 'text-white hover:text-green-400 hover:bg-white/10'
-                  }`}
+                  className={`block px-3 py-2 text-base font-medium transition-all duration-300 ease-in-out transform hover:translate-x-2 ${location.pathname === link.path
+                    ? 'text-green-400 bg-white/10'
+                    : 'text-white hover:text-green-400 hover:bg-white/10'
+                    }`}
                 >
                   {link.name}
                 </Link>
               ))}
-              
+
               {/* Mobile Auth Buttons */}
               <div className="pt-4 border-t border-white/20">
                 {isLoggedIn() ? (
@@ -182,7 +207,7 @@ const Navbar = () => {
                     >
                       <div className="h-5 w-5 bg-gray-600 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out hover:bg-gray-500">
                         <img
-                          src={user?.avatar || "https://via.placeholder.com/40"}
+                          src={userInfo?.avatar ? `http://localhost:5000${userInfo.avatar}` : "https://via.placeholder.com/40"}
                           alt="profile"
                           className="w-full h-full object-cover rounded-full"
                         />
