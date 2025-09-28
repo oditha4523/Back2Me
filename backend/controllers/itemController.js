@@ -16,7 +16,7 @@ const addItem = async (req, res) => {
     // If protect middleware is used, req.user will exist
     if (!req.user) return res.status(401).json({ message: 'Not authorized' });
 
-    const { name, description, location, category, claimMethod, verifyInfo } = req.body;
+    const { name, description, location, locationName, category, claimMethod, verifyInfo } = req.body;
 
     if (!name || !description || !location || !category || !claimMethod || !verifyInfo) {
       return res.status(400).json({ message: 'Please fill all fields' });
@@ -29,6 +29,7 @@ const addItem = async (req, res) => {
       category,
       description,
       location,
+      locationName,
       imageUrl,
       reporter: {
         id: req.user._id,

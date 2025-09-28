@@ -18,6 +18,10 @@ const itemSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    locationName: {
+      type: String,
+      required: false,
+    },
     imageUrl: {
       type: String,
       required: true,

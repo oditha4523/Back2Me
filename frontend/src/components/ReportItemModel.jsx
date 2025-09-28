@@ -29,6 +29,7 @@ const ReportItemModel = ({ open, onClose }) => {
   const [category, setCategory] = useState('');
   const [itemName, setItemName] = useState('');
   const [selectedLocation, setSelectedLocation] = useState(null);
+  const [selectedLocationName, setSelectedLocationName] = useState('');
   const [showMap, setShowMap] = useState(false);
   const [description, setDescription] = useState('');
   const [imageFile, setImageFile] = useState(null);
@@ -76,6 +77,7 @@ const ReportItemModel = ({ open, onClose }) => {
       formData.append('name', itemName);
       formData.append('category', category);
       formData.append('location', `${selectedLocation.lat}, ${selectedLocation.lng}`);
+      formData.append('locationName', selectedLocationName);
       formData.append('description', description);
       formData.append('claimMethod', claimMethod);
       formData.append('verifyInfo', verifyInfo);
@@ -107,6 +109,7 @@ const ReportItemModel = ({ open, onClose }) => {
       setCategory('');
       setItemName('');
       setSelectedLocation(null);
+      setSelectedLocationName('');
       setShowMap(false);
       setDescription('');
       setImageFile(null);
@@ -140,6 +143,7 @@ const ReportItemModel = ({ open, onClose }) => {
     const lng = parseFloat(result.lon);
     setMapCenter([lat, lng]);
     setSelectedLocation({ lat, lng });
+    setSelectedLocationName(result.display_name);
     setSearchResults([]);
     setSearchQuery(result.display_name);
   };
@@ -277,11 +281,28 @@ const ReportItemModel = ({ open, onClose }) => {
                       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                       attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     />
-                    <LocationPicker onLocationSelect={(location) => {
+                    <LocationPicker onLocationSelect={async (location) => {
                       setSelectedLocation(location);
                       setShowMap(false);
                       setSearchQuery('');
                       setSearchResults([]);
+                      
+                      // Reverse geocoding to get location name
+                      try {
+                        const response = await fetch(
+                          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${location.lat}&lon=${location.lng}&zoom=18&addressdetails=1`
+                        );
+                        const data = await response.json();
+                        if (data && data.display_name) {
+                          setSelectedLocationName(data.display_name);
+                          setSearchQuery(data.display_name);
+                        } else {
+                          setSelectedLocationName(`${location.lat.toFixed(6)}, ${location.lng.toFixed(6)}`);
+                        }
+                      } catch (error) {
+                        console.error('Reverse geocoding error:', error);
+                        setSelectedLocationName(`${location.lat.toFixed(6)}, ${location.lng.toFixed(6)}`);
+                      }
                     }} />
                     {selectedLocation && (
                       <Marker position={[selectedLocation.lat, selectedLocation.lng]} />
@@ -413,6 +434,7 @@ const ReportItemModel = ({ open, onClose }) => {
                 setCategory('');
                 setItemName('');
                 setSelectedLocation(null);
+                setSelectedLocationName('');
                 setShowMap(false);
                 setDescription('');
                 setImageFile(null);
