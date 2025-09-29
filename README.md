@@ -6,7 +6,7 @@
 
 ## Overview
 
-**Back2Me** is a web-based application designed to help users **find and return lost items** through a secure, location-aware platform. It streamlines the traditional lost & found process by allowing users to search for, post, and claim lost or found items with ease—powered by geolocation, user verification, and QR technology.
+**Back2Me** is a full-stack web application that helps users report, find, and claim lost or found items. It uses geolocation, QR codes, and secure user authentication to make the lost & found process easier, safer, and more reliable.
 
 ---
 
@@ -18,32 +18,53 @@ Coming soon...
 
 ## Key Features
 
-- 🗺️ **Interactive Map View** to browse nearby found items by category, date, and location
+- 🗺️ **Interactive Map View** to browse nearby found items by category
 - ➕ **Post Found Items** with images, details, and precise location
-- 🔍 **Search Lost Items** using filters like category, date, and area
-- ✅ **Claim Verification** through item-specific security questions
+- 🔍 **Search Lost Items** using filters like category
+- ✅ **Claim Verification** through call, email or item-specific security questions
 - 🧾 **QR Code Identification** printed and attached to personal belongings
-- 🧑‍🤝‍🧑 **Anonymous Communication** until item verification is complete
-- 🔐 **User Authentication** with role-based access
-- 📦 **Claimed Items Archive** showing past recovery history
 
 ---
 
 ## Tech Stack
 
-| Layer         | Technology                          |
-|---------------|-------------------------------------|
-| Frontend      | React.js, Tailwind CSS              |
-| Backend       | Node.js                             |
-| Database      | MongoDB                             |
-| Maps & Geo    | Google Maps API / Leaflet.js (TBD)  |
-| QR Code       | `qrcode.react` (TBD)                |
-| Authentication| Firebase Auth / Supabase Auth (TBD) |
+| Layer         | Technology                                         |
+|---------------|----------------------------------------------------|
+| Frontend      | React.js, Tailwind CSS                             |
+| Backend       | Node.js, Express.js                                |
+| Database      | MongoDB, Mongoose                                  |
+| Maps & Geo    | Leaflet.js                                         |
+| QR Code       | qrcode (backend), qrcode.react (frontend)          |
+| Authentication| JWT                                                |
+| SMS           | Twilio (for claim notifications)                   |
 
 ---
 
 ## Project Structure
-
+```
+Back2Me/
+├── backend/ # Backend (Node.js + Express)
+│ ├── controllers/ # Business logic for routes
+│ ├── middleware/ # Auth, file upload, etc.
+│ ├── models/ # Mongoose schemas
+│ ├── routes/ # Express route definitions
+│ ├── uploads/ # Uploaded images
+│ ├── utils/ # Helper functions
+│ └── server.js # Main server file
+│
+├── frontend/ # Frontend (React.js + Tailwind CSS)
+│ ├── public/ # Static assets
+│ └── src/
+│ ├── assets/ # Images, icons
+│ ├── components/ # Reusable React components
+│ ├── pages/ # Main app pages (Home, FindItem, ReportItem, Profile, etc.)
+│ ├── utils/ # Auth helpers, API calls
+│ ├── App.jsx # Main app component
+│ ├── index.css # Global styles
+│ └── main.jsx # Entry point
+│
+└── README.md # Project documentation
+```
 ---
 
 ## QR Code Feature
@@ -64,14 +85,14 @@ Each registered user will receive a unique QR code. Users are encouraged to:
 
 ## Contributing
 We welcome contributions! To contribute:
-  - Fork the repo
-  - Create a new branch (git checkout -b feature-name)
-  - Commit your changes (git commit -m 'add feature')
-  - Push to the branch (git push origin feature-name)
+  - **Fork** the repo
+  - **Create a new branch**
+    ``` git checkout -b feature-name ```
+  - Commit your changes
+    ```git commit -m 'add feature'```
+  - Push to the branch
+    ```git push origin feature-name```
   - Open a Pull Request
-
-## License
-This project is licensed under the MIT License.
 
 ## Authors
 OC Weerasekara
