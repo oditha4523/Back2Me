@@ -99,14 +99,14 @@ const HeroSection = () => {
             variants={itemVariants}
           >
             <motion.h1 
-  className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-green mb-6 sm:mb-10 text-center md:text-left leading-tight"
-  style={{ textShadow: '2px 2px 4px rgba(21, 179, 89, 0.8)' }}
-  variants={textVariants}
->
-  <span style={{ fontFamily: 'Cultural-Literature-Demo, serif', color:'#3CB371' }}>
-    Together
-  </span><br />We bring it <br />Back.
-</motion.h1>
+              className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-green mb-6 sm:mb-10 text-center md:text-left leading-tight"
+              style={{ textShadow: '2px 2px 4px rgba(21, 179, 89, 0.8)' }}
+              variants={textVariants}
+            >
+              <span style={{ fontFamily: 'Cultural-Literature-Demo, serif', color:'#3CB371' }}>
+                Together
+              </span><br />We bring it <br />Back.
+            </motion.h1>
 
             
             {/* Action Buttons */}
